@@ -8,7 +8,7 @@ class Order < ApplicationRecord
 
   enum :status, { cart: 0, confirmed: 1, delivered: 2 }
   enum :payment_method, { pix: 0, card: 1, cash: 2 }
-
+  validates :payment_method, presence: true
   validates :estimated_value, numericality: { greater_than: 0 }
   validates :pickup_address, :delivery_address, :user, presence: true
 

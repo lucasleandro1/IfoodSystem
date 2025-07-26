@@ -1,18 +1,9 @@
 <h1>Meus Pedidos</h1>
 
 <% @orders.each do |order| %>
-  <div>
-    <p><strong>Pedido:</strong> #<%= order.id %></p>
-    <p>Status: <%= order.status %></p>
-    <p>Valor estimado: R$ <%= order.estimated_value %></p>
-    <p>Produtos:</p>
-    <ul>
-      <% order.order_products.each do |op| %>
-        <li>
-          <%= op.product.name %> - Qtd: <%= op.quantity %> - R$ <%= op.unit_price %>
-        </li>
-      <% end %>
-    </ul>
-    <hr>
+  <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+    <p><strong>Produto:</strong> <%= order.item_description %></p>
+    <p><strong>Valor:</strong> <%= number_to_currency(order.estimated_value) %></p>
+    <p><%= link_to 'Ver detalhes', order_path(order) %></p>
   </div>
 <% end %>

@@ -7,7 +7,7 @@
     <li>
       <strong><%= product.name %></strong> - <%= number_to_currency(product.price) %>
       <%= link_to 'Ver detalhes', product_path(product) %> |
-      <%= link_to 'Adicionar ao carrinho', add_product_order_path(@current_order || :new, product_id: product.id), method: :post %>
+      <%= link_to 'Adicionar Pedido', new_order_path(product_id: product.id) %>
     </li>
   <% end %>
   </ul>

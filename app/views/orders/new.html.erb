@@ -1,29 +1,25 @@
-<!-- app/views/orders/new.html.erb -->
+<h1>Finalizar Pedido</h1>
 
-<h1>Criar Pedido</h1>
+<p><strong>Produto:</strong> <%= @product.name %></p>
+<p><strong>Preço:</strong> R$ <%= number_to_currency(@product.price) %></p>
 
-<%= form_with model: @order, local: true do |f| %>
+<%= form_with model: @order, url: orders_path(product_id: @product.id) do |f| %>
   <div>
     <%= f.label :pickup_address_id, "Endereço de Coleta" %>
-    <%= f.collection_select :pickup_address_id, current_user.addresses, :id, :street, prompt: "Selecione o endereço de coleta" %>
+    <%= f.collection_select :pickup_address_id, @restaurant_addresses, :id,
+      ->(a) { "#{a.street}, #{a.number} - #{a.neighborhood}" }, prompt: "Selecione" %>
   </div>
 
   <div>
     <%= f.label :delivery_address_id, "Endereço de Entrega" %>
-    <%= f.collection_select :delivery_address_id, current_user.addresses, :id, :street, prompt: "Selecione o endereço de entrega" %>
+    <%= f.collection_select :delivery_address_id, @client_addresses, :id,
+      ->(a) { "#{a.street}, #{a.number} - #{a.neighborhood}" }, prompt: "Selecione" %>
   </div>
 
   <div>
     <%= f.label :payment_method, "Método de Pagamento" %>
-    <%= f.select :payment_method, Order.payment_methods.keys.map { |method| [method.titleize, method] }, prompt: "Escolha o método de pagamento" %>
+    <%= f.select :payment_method, Order.payment_methods.keys.map { |m| [m.titleize, m] }, prompt: "Selecione" %>
   </div>
 
-  <div>
-    <%= f.label :product_ids, "Produtos" %>
-    <%= f.collection_check_boxes :product_ids, Product.all, :id, :name %>
-  </div>
-
-  <div>
-    <%= f.submit "Criar Pedido" %>
-  </div>
+  <%= f.submit "Finalizar Pedido" %>
 <% end %>

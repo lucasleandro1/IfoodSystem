@@ -1,22 +1,9 @@
-<h1>Seu Carrinho de Compras</h1>
+<h1>Detalhes do Pedido</h1>
 
-<ul>
-  <% @products_in_cart.each do |order_product| %>
-    <li>
-      <strong><%= order_product.product.name %></strong><br>
-      Quantidade: <%= order_product.quantity %><br>
-      Preço Unitário: <%= number_to_currency(order_product.unit_price) %><br>
-      Total: <%= number_to_currency(order_product.quantity * order_product.unit_price) %><br>
-    </li>
-  <% end %>
-</ul>
+<p><strong>Produto:</strong> <%= @order.item_description %></p>
+<p><strong>Valor estimado:</strong> <%= number_to_currency(@order.estimated_value) %></p>
+<p><strong>Coleta:</strong> <%= @order.pickup_address.street %>, <%= @order.pickup_address.number %> - <%= @order.pickup_address.neighborhood %></p>
+<p><strong>Entrega:</strong> <%= @order.delivery_address.street %>, <%= @order.delivery_address.number %> - <%= @order.delivery_address.neighborhood %></p>
+<p><strong>Método de pagamento:</strong> <%= Order.payment_methods.key(@order.payment_method_before_type_cast).to_s.titleize %></p>
 
-<h3>Total: <%= number_to_currency(@total_value) %></h3>
 
-<%= form_with url: checkout_order_path(@order), method: :post do |f| %>
-  <h4>Escolha o método de pagamento:</h4>
-  <%= f.radio_button :payment_method, 'pix' %> Pix
-  <%= f.radio_button :payment_method, 'card' %> Cartão
-  <%= f.radio_button :payment_method, 'cash' %> Dinheiro
-  <%= f.submit "Finalizar Pedido" %>
-<% end %>

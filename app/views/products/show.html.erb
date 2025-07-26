@@ -6,7 +6,7 @@
 
 
 <% if current_user.client? %>
-  <%= link_to 'Adicionar ao Carrinho', "#", class: "add-to-cart", data: { product_id: @product.id } %>
+  <%= link_to 'Adicionar Pedido', new_order_path(product_id: product.id) %>
 <% elsif current_user.restaurant? %>
   <%= link_to 'Editar', edit_product_path(@product) %> |
   <%= link_to 'Excluir', product_path(@product), method: :delete, data: { confirm: "Tem certeza?" } %>
