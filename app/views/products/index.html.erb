@@ -1,0 +1,26 @@
+<h1>Produtos</h1>
+
+<% if current_user.client? %>
+  <p>Veja os produtos de todos os restaurantes abaixo:</p>
+  <ul>
+  <% @products.each do |product| %>
+    <li>
+      <strong><%= product.name %></strong> - <%= number_to_currency(product.price) %>
+      <%= link_to 'Ver detalhes', product_path(product) %> |
+      <%= link_to 'Adicionar ao carrinho', add_product_order_path(@current_order || :new, product_id: product.id), method: :post %>
+    </li>
+  <% end %>
+  </ul>
+<% elsif current_user.restaurant? %>
+  <%= link_to 'Novo Produto', new_product_path, class: 'button' %>
+  <ul>
+    <% @products.each do |product| %>
+      <li>
+        <strong><%= product.name %></strong> - <%= number_to_currency(product.price) %>
+        <%= link_to 'Ver detalhes', product_path(product) %> | 
+        <%= link_to 'Editar', edit_product_path(product) %> | 
+        <%= link_to 'Excluir', product_path(product), method: :delete, data: { confirm: "Tem certeza?" } %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

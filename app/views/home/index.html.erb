@@ -1,0 +1,10 @@
+<h1>Você está aqui</h1>
+
+<% if current_user %>
+  <p>Hello, <%= current_user.email %></p>
+  <p><%= current_user.role %></p>
+
+  <div>
+    <%= link_to "Logout", destroy_user_session_path, method: :delete, data: { turbo_method: :delete } %>
+  </div>
+<% end %>

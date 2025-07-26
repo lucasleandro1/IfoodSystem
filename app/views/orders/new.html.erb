@@ -1,0 +1,29 @@
+<!-- app/views/orders/new.html.erb -->
+
+<h1>Criar Pedido</h1>
+
+<%= form_with model: @order, local: true do |f| %>
+  <div>
+    <%= f.label :pickup_address_id, "Endereço de Coleta" %>
+    <%= f.collection_select :pickup_address_id, current_user.addresses, :id, :street, prompt: "Selecione o endereço de coleta" %>
+  </div>
+
+  <div>
+    <%= f.label :delivery_address_id, "Endereço de Entrega" %>
+    <%= f.collection_select :delivery_address_id, current_user.addresses, :id, :street, prompt: "Selecione o endereço de entrega" %>
+  </div>
+
+  <div>
+    <%= f.label :payment_method, "Método de Pagamento" %>
+    <%= f.select :payment_method, Order.payment_methods.keys.map { |method| [method.titleize, method] }, prompt: "Escolha o método de pagamento" %>
+  </div>
+
+  <div>
+    <%= f.label :product_ids, "Produtos" %>
+    <%= f.collection_check_boxes :product_ids, Product.all, :id, :name %>
+  </div>
+
+  <div>
+    <%= f.submit "Criar Pedido" %>
+  </div>
+<% end %>

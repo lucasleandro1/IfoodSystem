@@ -1,0 +1,18 @@
+<h1>Meus Pedidos</h1>
+
+<% @orders.each do |order| %>
+  <div>
+    <p><strong>Pedido:</strong> #<%= order.id %></p>
+    <p>Status: <%= order.status %></p>
+    <p>Valor estimado: R$ <%= order.estimated_value %></p>
+    <p>Produtos:</p>
+    <ul>
+      <% order.order_products.each do |op| %>
+        <li>
+          <%= op.product.name %> - Qtd: <%= op.quantity %> - R$ <%= op.unit_price %>
+        </li>
+      <% end %>
+    </ul>
+    <hr>
+  </div>
+<% end %>

@@ -1,0 +1,35 @@
+<h2><%= t("devise.registrations.new.sign_up") %></h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <!-- Campo role com toggle -->
+  <div class="field">
+    <%= f.label :role, "Você é:" %><br/>
+    <%= f.radio_button :role, "client", checked: resource.role == "client" %>
+    <%= f.label :role_client, "Cliente" %><br/>
+    <%= f.radio_button :role, "restaurant", checked: resource.role == "restaurant" %>
+    <%= f.label :role_restaurant, "Restaurante" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Cadastrar" %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

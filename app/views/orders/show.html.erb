@@ -1,0 +1,22 @@
+<h1>Seu Carrinho de Compras</h1>
+
+<ul>
+  <% @products_in_cart.each do |order_product| %>
+    <li>
+      <strong><%= order_product.product.name %></strong><br>
+      Quantidade: <%= order_product.quantity %><br>
+      Preço Unitário: <%= number_to_currency(order_product.unit_price) %><br>
+      Total: <%= number_to_currency(order_product.quantity * order_product.unit_price) %><br>
+    </li>
+  <% end %>
+</ul>
+
+<h3>Total: <%= number_to_currency(@total_value) %></h3>
+
+<%= form_with url: checkout_order_path(@order), method: :post do |f| %>
+  <h4>Escolha o método de pagamento:</h4>
+  <%= f.radio_button :payment_method, 'pix' %> Pix
+  <%= f.radio_button :payment_method, 'card' %> Cartão
+  <%= f.radio_button :payment_method, 'cash' %> Dinheiro
+  <%= f.submit "Finalizar Pedido" %>
+<% end %>

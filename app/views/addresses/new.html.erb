@@ -1,0 +1,33 @@
+<h1>Cadastrar Novo Endereço</h1>
+
+<%= form_with model: @address do |f| %>
+  <% if @address.errors.any? %>
+    <div class="errors">
+      <h2><%= pluralize(@address.errors.count, "erro") %> proibiram esse endereço de ser salvo:</h2>
+      <ul>
+        <% @address.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :street, "Rua" %><br>
+    <%= f.text_field :street %><br><br>
+  </div>
+
+  <div class="field">
+    <%= f.label :number, "Número" %><br>
+    <%= f.text_field :number %><br><br>
+  </div>
+
+  <div class="field">
+    <%= f.label :neighborhood, "Bairro" %><br>
+    <%= f.text_field :neighborhood %><br><br>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Cadastrar Endereço" %>
+  </div>
+<% end %>
