@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resources :orders
+  resources :orders do
+    collection do
+      get :restaurant_index
+    end
+  end
   resources :foods
   resources :addresses
   resources :restaurants, only: [ :index, :show ]

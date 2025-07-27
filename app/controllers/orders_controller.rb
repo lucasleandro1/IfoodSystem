@@ -11,7 +11,7 @@ class OrdersController < ApplicationController
   end
 
   def new
-    @food = food.find(params[:food_id])
+    @food = Food.find(params[:food_id])
     @restaurant = @food.user
     @restaurant_addresses = @restaurant.addresses
     @client_addresses = current_user.addresses
@@ -19,7 +19,7 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @food = food.find(params[:food_id])
+    @food = Food.find(params[:food_id])
 
     @order = current_user.orders.new(
       pickup_address_id: params[:order][:pickup_address_id],

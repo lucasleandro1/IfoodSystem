@@ -5,7 +5,7 @@
 <p><strong>Restaurante</strong> <%= @food.user.email %></p>
 
 <% if current_user.client? %>
-  <%= link_to 'Adicionar Pedido', new_order_path(food_id: @food.id) %>
+  <%= link_to 'Criar pedido', new_order_path(food_id: @food.id) %>
 <% elsif current_user.restaurant? %>
   <%= link_to 'Editar', edit_food_path(@food) %> |
   <%= link_to 'Excluir', food_path(@food), method: :delete, data: { confirm: "Tem certeza?" } %>

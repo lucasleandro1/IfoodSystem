@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_27_034553) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_27_210240) do
   create_table "addresses", force: :cascade do |t|
     t.string "street"
     t.string "number"
@@ -31,15 +31,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_27_034553) do
     t.index ["user_id"], name: "index_foods_on_user_id"
   end
 
-  create_table "order_products", force: :cascade do |t|
+  create_table "order_foods", force: :cascade do |t|
     t.integer "order_id", null: false
-    t.integer "product_id", null: false
+    t.integer "food_id", null: false
     t.integer "quantity"
     t.decimal "unit_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["order_id"], name: "index_order_products_on_order_id"
-    t.index ["product_id"], name: "index_order_products_on_product_id"
+    t.index ["food_id"], name: "index_order_foods_on_food_id"
+    t.index ["order_id"], name: "index_order_foods_on_order_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -73,8 +73,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_27_034553) do
 
   add_foreign_key "addresses", "users"
   add_foreign_key "foods", "users"
-  add_foreign_key "order_products", "foods", column: "product_id"
-  add_foreign_key "order_products", "orders"
+  add_foreign_key "order_foods", "foods"
+  add_foreign_key "order_foods", "orders"
   add_foreign_key "orders", "addresses", column: "delivery_address_id"
   add_foreign_key "orders", "addresses", column: "pickup_address_id"
   add_foreign_key "orders", "users"
