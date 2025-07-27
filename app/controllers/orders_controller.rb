@@ -34,7 +34,6 @@ class OrdersController < ApplicationController
     if @order.save
       redirect_to @order, notice: "Pedido criado com sucesso."
     else
-      # recarrega as variáveis para renderizar novamente o form
       @restaurant = @food.user
       @restaurant_addresses = @restaurant.addresses
       @client_addresses = current_user.addresses
