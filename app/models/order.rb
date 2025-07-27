@@ -3,8 +3,8 @@ class Order < ApplicationRecord
   belongs_to :pickup_address, class_name: "Address"
   belongs_to :delivery_address, class_name: "Address"
 
-  has_many :order_products, dependent: :destroy
-  has_many :products, through: :order_products
+  has_many :order_foods, dependent: :destroy
+  has_many :foods, through: :order_foods
 
   enum :status, { cart: 0, confirmed: 1, delivered: 2 }
   enum :payment_method, { pix: 0, card: 1, cash: 2 }
@@ -13,6 +13,6 @@ class Order < ApplicationRecord
   validates :pickup_address, :delivery_address, :user, presence: true
 
   def total_price
-    order_products.sum("quantity * unit_price")
+    order_foods.sum("quantity * unit_price")
   end
 end

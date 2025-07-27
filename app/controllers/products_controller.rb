@@ -1,20 +1,20 @@
-class ProductsController < ApplicationController
+class FoodsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_restaurant, only: %i[new create edit update destroy]
-  before_action :set_product, only: %i[show edit update destroy]
+  before_action :set_food, only: %i[show edit update destroy]
 
   def index
-    @products = current_user.client? ? Product.all : current_user.products
+    @foods = current_user.client? ? Food.all : current_user.foods
   end
 
   def new
-    @product = Product.new
+    @food = Food.new
   end
 
   def create
-    @product = current_user.products.build(product_params)
-    if @product.save
-      redirect_to products_path, notice: "Produto criado com sucesso!"
+    @food = current_user.foods.build(food_params)
+    if @food.save
+      redirect_to foods_path, notice: "Produto criado com sucesso!"
     else
       render :new
     end
@@ -22,33 +22,34 @@ class ProductsController < ApplicationController
 
   def show
   end
+
   def edit
   end
 
   def update
-    if @product.update(product_params)
-      redirect_to products_path, notice: "Produto atualizado com sucesso!"
+    if @food.update(food_params)
+      redirect_to foods_path, notice: "Produto atualizado com sucesso!"
     else
       render :edit
     end
   end
 
   def destroy
-    @product.destroy
-    redirect_to products_path, notice: "Produto excluído com sucesso!"
+    @food.destroy
+    redirect_to foods_path, notice: "Produto excluído com sucesso!"
   end
 
   private
 
-  def set_product
-    @product = Product.find(params[:id])
+  def set_food
+    @food = food.find(params[:id])
   end
 
   def require_restaurant
     redirect_to root_path, alert: "Acesso restrito." unless current_user.restaurant?
   end
 
-  def product_params
-    params.require(:product).permit(:name, :description, :price)
+  def food_params
+    params.require(:food).permit(:name, :description, :price)
   end
 end

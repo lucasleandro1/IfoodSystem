@@ -5,6 +5,6 @@ class RestaurantsController < ApplicationController
 
   def show
     @restaurant = User.find(params[:id])
-    @products = @restaurant.products
+    @foods = @restaurant.foods
   end
 end

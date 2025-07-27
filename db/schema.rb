@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_26_155411) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_27_034553) do
   create_table "addresses", force: :cascade do |t|
     t.string "street"
     t.string "number"
@@ -19,6 +19,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_26_155411) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "foods", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.decimal "price"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_foods_on_user_id"
   end
 
   create_table "order_products", force: :cascade do |t|
@@ -48,16 +58,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_26_155411) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
-  create_table "products", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.decimal "price"
-    t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_products_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -72,10 +72,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_26_155411) do
   end
 
   add_foreign_key "addresses", "users"
+  add_foreign_key "foods", "users"
+  add_foreign_key "order_products", "foods", column: "product_id"
   add_foreign_key "order_products", "orders"
-  add_foreign_key "order_products", "products"
   add_foreign_key "orders", "addresses", column: "delivery_address_id"
   add_foreign_key "orders", "addresses", column: "pickup_address_id"
   add_foreign_key "orders", "users"
-  add_foreign_key "products", "users"
 end

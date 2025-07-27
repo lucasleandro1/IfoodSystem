@@ -14,5 +14,5 @@ class User < ApplicationRecord
 
   has_many :addresses, dependent: :destroy
   has_many :orders, dependent: :destroy
-  has_many :products, dependent: :destroy
+  has_many :foods, dependent: :destroy
 end

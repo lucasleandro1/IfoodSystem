@@ -1,8 +1,8 @@
 <h2><%= @restaurant.email %></h2>
 
 <h3>Pratos</h3>
-<% @products.each do |product| %>
+<% @foods.each do |food| %>
   <div>
-    <p><%= product.name %> - R$ <%= product.price %></p>
+    <p><%= food.name %> - R$ <%= food.price %></p>
   </div>
 <% end %>

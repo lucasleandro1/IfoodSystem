@@ -11,22 +11,22 @@ class OrdersController < ApplicationController
   end
 
   def new
-    @product = Product.find(params[:product_id])
-    @restaurant = @product.user
+    @food = food.find(params[:food_id])
+    @restaurant = @food.user
     @restaurant_addresses = @restaurant.addresses
     @client_addresses = current_user.addresses
     @order = Order.new
   end
 
   def create
-    @product = Product.find(params[:product_id])
+    @food = food.find(params[:food_id])
 
     @order = current_user.orders.new(
       pickup_address_id: params[:order][:pickup_address_id],
       delivery_address_id: params[:order][:delivery_address_id],
-      item_description: @product.name,
+      item_description: @food.name,
       requested_at: Time.current,
-      estimated_value: @product.price,
+      estimated_value: @food.price,
       payment_method: params[:order][:payment_method],
       status: :confirmed
     )
@@ -35,7 +35,7 @@ class OrdersController < ApplicationController
       redirect_to @order, notice: "Pedido criado com sucesso."
     else
       # recarrega as variáveis para renderizar novamente o form
-      @restaurant = @product.user
+      @restaurant = @food.user
       @restaurant_addresses = @restaurant.addresses
       @client_addresses = current_user.addresses
       render :new, status: :unprocessable_entity

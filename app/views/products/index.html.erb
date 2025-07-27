@@ -3,23 +3,23 @@
 <% if current_user.client? %>
   <p>Veja os produtos de todos os restaurantes abaixo:</p>
   <ul>
-  <% @products.each do |product| %>
+  <% @foods.each do |food| %>
     <li>
-      <strong><%= product.name %></strong> - <%= number_to_currency(product.price) %>
-      <%= link_to 'Ver detalhes', product_path(product) %> |
-      <%= link_to 'Adicionar Pedido', new_order_path(product_id: product.id) %>
+      <strong><%= food.name %></strong> - <%= number_to_currency(food.price) %>
+      <%= link_to 'Ver detalhes', food_path(food) %> |
+      <%= link_to 'Adicionar Pedido', new_order_path(food_id: food.id) %>
     </li>
   <% end %>
   </ul>
 <% elsif current_user.restaurant? %>
-  <%= link_to 'Novo Produto', new_product_path, class: 'button' %>
+  <%= link_to 'Novo Produto', new_food_path, class: 'button' %>
   <ul>
-    <% @products.each do |product| %>
+    <% @foods.each do |food| %>
       <li>
-        <strong><%= product.name %></strong> - <%= number_to_currency(product.price) %>
-        <%= link_to 'Ver detalhes', product_path(product) %> | 
-        <%= link_to 'Editar', edit_product_path(product) %> | 
-        <%= link_to 'Excluir', product_path(product), method: :delete, data: { confirm: "Tem certeza?" } %>
+        <strong><%= food.name %></strong> - <%= number_to_currency(food.price) %>
+        <%= link_to 'Ver detalhes', food_path(food) %> | 
+        <%= link_to 'Editar', edit_food_path(food) %> | 
+        <%= link_to 'Excluir', food_path(food), method: :delete, data: { confirm: "Tem certeza?" } %>
       </li>
     <% end %>
   </ul>

@@ -1,9 +1,9 @@
 <h1>Finalizar Pedido</h1>
 
-<p><strong>Produto:</strong> <%= @product.name %></p>
-<p><strong>Preço:</strong> R$ <%= number_to_currency(@product.price) %></p>
+<p><strong>Produto:</strong> <%= @food.name %></p>
+<p><strong>Preço:</strong> R$ <%= number_to_currency(@food.price) %></p>
 
-<%= form_with model: @order, url: orders_path(product_id: @product.id) do |f| %>
+<%= form_with model: @order, url: orders_path(food_id: @food.id) do |f| %>
   <div>
     <%= f.label :pickup_address_id, "Endereço de Coleta" %>
     <%= f.collection_select :pickup_address_id, @restaurant_addresses, :id,
