@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :orders
-  resources :products
+  resources :foods
   resources :addresses
   resources :restaurants, only: [ :index, :show ]
   namespace :restaurant do
