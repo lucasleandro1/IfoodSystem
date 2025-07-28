@@ -7,7 +7,7 @@
     <li>
       <strong><%= address.street %></strong>, <%= address.number %>, <%= address.neighborhood %>
       <%= link_to 'Editar', edit_address_path(address), class: 'button button--primary' %>
-      <%= button_to_to 'Excluir', address_path(address), method: :delete, data: { confirm: 'Tem certeza?' }, class: 'button button--danger' %>
+      <%= button_to 'Excluir', address_path(address), method: :delete, data: { confirm: 'Tem certeza?' }, class: 'button button--danger' %>
     </li>
   <% end %>
 </ul>
