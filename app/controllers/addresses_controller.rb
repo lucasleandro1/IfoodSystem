@@ -10,10 +10,12 @@ class AddressesController < ApplicationController
   end
 
   def create
-    @address = current_user.addresses.new(address_params)
-    if @address.save
-      redirect_to root_path, notice: "Endereço cadastrado com sucesso."
+    address_manager = AddressManager::Creator.new(current_user, address_params)
+    result = address_manager.call
+    if result[:success]
+      redirect_to edit_user_registration_path, notice: result[:message]
     else
+      flash[:alert] = result[:error_message]
       render :new
     end
   end
@@ -24,17 +26,28 @@ class AddressesController < ApplicationController
 
   def update
     @address = current_user.addresses.find(params[:id])
-    if @address.update(address_params)
-      redirect_to edit_user_registration_path, notice: "Endereço atualizado com sucesso."
+    address_manager = AddressManager::Updater.new(current_user, @address, address_params)
+    result = address_manager.call
+
+    if result[:success]
+      redirect_to edit_user_registration_path, notice: result[:message]
     else
+      flash[:alert] = result[:error_message]
       render :edit
     end
   end
 
   def destroy
     @address = current_user.addresses.find(params[:id])
-    @address.destroy
-    redirect_to edit_user_registration_path, notice: "Endereço excluído com sucesso."
+    address_manager = AddressManager::Destroyer.new(current_user, @address)
+    result = address_manager.call
+
+    if result[:success]
+      redirect_to edit_user_registration_path, notice: result[:message]
+    else
+      flash[:alert] = result[:error_message]
+      redirect_to edit_user_registration_path
+    end
   end
 
   private

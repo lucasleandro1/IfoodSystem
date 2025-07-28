@@ -1,9 +1,11 @@
 <% if @order.present?%>
  <h1>Não ha pedidos</h1>
   <%else%>
+  <h1>Pedidos</h1>
   <% @orders.each do |order| %>
-   <h1>Pedidos</h1>
+
     <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+      <p><strong>Horario:</strong> <%= order.requested_at.strftime("%H:%M") %></p>
       <p><strong>Comida:</strong> <%= order.item_description %></p>
       <p><strong>Quantidade:</strong> <%= order.quantity %></p>
       <p><strong>Valor:</strong> <%= number_to_currency(order.estimated_value) %></p>

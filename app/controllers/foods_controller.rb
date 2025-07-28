@@ -12,37 +12,48 @@ class FoodsController < ApplicationController
   end
 
   def create
-    @food = current_user.foods.build(food_params)
-    if @food.save
-      redirect_to foods_path, notice: "Produto criado com sucesso!"
+    result = FoodManager::Creator.new(current_user, food_params).call
+
+    if result[:success]
+      redirect_to foods_path, notice: result[:message]
     else
+      @food = Food.new(food_params)
+      flash.now[:alert] = result[:error_message]
       render :new
     end
   end
 
-  def show
-  end
+  def show; end
 
-  def edit
-  end
+  def edit; end
 
   def update
-    if @food.update(food_params)
-      redirect_to foods_path, notice: "Produto atualizado com sucesso!"
+    result = FoodManager::Updater.new(@food, food_params).call
+
+    if result[:success]
+      redirect_to foods_path, notice: result[:message]
     else
+      flash.now[:alert] = result[:error_message]
       render :edit
     end
   end
 
   def destroy
-    @food.destroy
-    redirect_to foods_path, notice: "Produto excluído com sucesso!"
+    result = FoodManager::Destroyer.new(@food).call
+
+    if result[:success]
+      redirect_to foods_path, notice: result[:message]
+    else
+      redirect_to foods_path, alert: result[:error_message]
+    end
   end
 
   private
 
   def set_food
     @food = Food.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to foods_path, alert: "Produto não encontrado."
   end
 
   def require_restaurant
