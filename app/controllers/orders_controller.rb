@@ -28,7 +28,7 @@ class OrdersController < ApplicationController
       requested_at: Time.current,
       estimated_value: @food.price,
       payment_method: params[:order][:payment_method],
-      status: :confirmed
+      status: :pendent
     )
 
     if @order.save

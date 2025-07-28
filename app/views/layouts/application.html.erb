@@ -23,13 +23,17 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="flex flex-col min-h-screen font-sans bg-base-200">
 
     <%= render 'shared/topbar' %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <main class="main-content">
-      <%= yield %>
+    <main class="container mx-auto grid grid-cols-1 lg:grid-cols-[14rem_1fr] gap-12 flex-grow px-4 mt-8">
+      <div class="w-full">
+      <%= render "shared/incomple_profile_alert" %>
+        <%= yield %>
+      </div>
     </main>
-</body>
+
+  </body>
 </html>

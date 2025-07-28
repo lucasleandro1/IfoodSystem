@@ -47,8 +47,8 @@
     <% current_user.addresses.each do |address| %>
       <li>
         <strong><%= address.street %>, <%= address.number %> - <%= address.neighborhood %></strong>
-        <%= link_to 'Editar', edit_address_path(address) %> | 
-        <%= link_to 'Excluir', address_path(address), method: :delete, data: { confirm: 'Tem certeza?' } %>
+        <%= link_to 'Editar', edit_address_path(address) %> |
+        <%= button_to 'Excluir', address_path(address), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %>
       </li>
     <% end %>
   </ul>

@@ -24,7 +24,7 @@ class AddressesController < ApplicationController
   def update
     @address = current_user.addresses.find(params[:id])
     if @address.update(address_params)
-      redirect_to user_path(current_user), notice: "Endereço atualizado com sucesso."
+      redirect_to edit_user_registration_path, notice: "Endereço atualizado com sucesso."
     else
       render :edit
     end
@@ -33,7 +33,7 @@ class AddressesController < ApplicationController
   def destroy
     @address = current_user.addresses.find(params[:id])
     @address.destroy
-    redirect_to user_path(current_user), notice: "Endereço excluído com sucesso."
+    redirect_to edit_user_registration_path, notice: "Endereço excluído com sucesso."
   end
 
   private

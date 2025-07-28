@@ -6,7 +6,7 @@ class Order < ApplicationRecord
   has_many :order_foods, dependent: :destroy
   has_many :foods, through: :order_foods
 
-  enum :status, { cart: 0, confirmed: 1, delivered: 2 }
+  enum :status, { pendent: 0, preparing: 1, in_route: 2, delivered: 3 }
   enum :payment_method, { pix: 0, card: 1, cash: 2 }
   validates :payment_method, presence: true
   validates :estimated_value, numericality: { greater_than: 0 }
