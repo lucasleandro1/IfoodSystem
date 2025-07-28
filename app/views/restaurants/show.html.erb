@@ -1,8 +1,9 @@
-<h2><%= @restaurant.email %></h2>
+<h2><%= separar_nome_email(@restaurant.email) %></h2>
 
 <h3>Pratos</h3>
 <% @foods.each do |food| %>
   <div>
-    <p><%= food.name %> - R$ <%= food.price %></p>
+    <%= link_to 'Criar pedido', new_order_path(food_id: food.id) %>
+    <p><%= food.name %> - R$ <%= food.price %></p> 
   </div>
 <% end %>

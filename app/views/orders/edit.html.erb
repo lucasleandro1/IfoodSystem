@@ -1,0 +1,12 @@
+<h1>Atualizar Status do Pedido</h1>
+
+<%= form_with model: @order, local: true do |form| %>
+  <div class="field">
+    <%= form.label :status %>
+    <%= form.select :status, Order.statuses.keys.map { |s| [s.humanize, s] } %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Atualizar" %>
+  </div>
+<% end %>

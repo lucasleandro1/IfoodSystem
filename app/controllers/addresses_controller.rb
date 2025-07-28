@@ -4,6 +4,7 @@ class AddressesController < ApplicationController
   def index
     @addresses = current_user.addresses
   end
+
   def new
     @address = current_user.addresses.new
   end

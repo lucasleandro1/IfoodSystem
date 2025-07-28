@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :addresses
   resources :restaurants, only: [ :index, :show ]
   namespace :restaurant do
-    resources :orders, only: [ :index, :show, :update ]
+    resources :orders, only: [:index, :show, :new, :create, :edit, :update]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root to: "home#index"

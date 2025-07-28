@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_28_021820) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_28_145416) do
   create_table "addresses", force: :cascade do |t|
     t.string "street"
     t.string "number"
@@ -41,9 +41,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_021820) do
     t.integer "payment_method"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "status"
     t.integer "quantity"
     t.integer "food_id", null: false
+    t.integer "status", default: 0
     t.index ["delivery_address_id"], name: "index_orders_on_delivery_address_id"
     t.index ["food_id"], name: "index_orders_on_food_id"
     t.index ["pickup_address_id"], name: "index_orders_on_pickup_address_id"

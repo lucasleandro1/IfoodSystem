@@ -1,26 +1,21 @@
-<h1>Comidas</h1>
-
-<% if current_user.client? %>
+<% if current_user.present? %>
+  <h1>Comidas</h1>
   <p>Veja os pratos de todos os restaurantes abaixo:</p>
   <ul>
+  <%= link_to 'Novo Produto', new_food_path, class: 'button' if current_user.restaurant?%>
   <% @foods.each do |food| %>
     <li>
       <strong><%= food.name %></strong> - <%= number_to_currency(food.price) %>
-      <%= link_to 'Ver detalhes', food_path(food) %> |
-      <%= link_to 'Criar pedido', new_order_path(food_id: food.id) %>
+      <% if current_user.restaurant?%>
+        <%= link_to 'Editar', edit_food_path(food) %> |
+        <%= button_to 'Excluir', food_path(food), method: :delete, data: { confirm: "Tem certeza?" } %>
+      <%else%>
+        <%= link_to 'Ver detalhes', food_path(food) %> |
+        <%= link_to 'Criar pedido', new_order_path(food_id: food.id) %>
+      <% end %>
     </li>
   <% end %>
   </ul>
-<% elsif current_user.restaurant? %>
-  <%= link_to 'Novo Produto', new_food_path, class: 'button' %>
-  <ul>
-    <% @foods.each do |food| %>
-      <li>
-        <strong><%= food.name %></strong> - <%= number_to_currency(food.price) %>
-        <%= link_to 'Ver detalhes', food_path(food) %> | 
-        <%= link_to 'Editar', edit_food_path(food) %> | 
-        <%= link_to 'Excluir', food_path(food), method: :delete, data: { confirm: "Tem certeza?" } %>
-      </li>
-    <% end %>
-  </ul>
+  <%else%>
+  <h1>Sem comidas por enquanto!</h1>
 <% end %>

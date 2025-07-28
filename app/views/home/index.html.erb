@@ -1,9 +1,8 @@
 <h1>Você está aqui</h1>
 
 <% if current_user %>
-  <p>Hello, <%= current_user.email %></p>
+  <p>Hello, <%= split_name(current_user.email) %></p>
   <p><%= current_user.role %></p>
-
   <div>
     <%= button_to "Logout", destroy_user_session_path, method: :delete %>
   </div>

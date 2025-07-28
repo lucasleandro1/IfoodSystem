@@ -7,4 +7,8 @@
 <p><strong>Entrega:</strong> <%= @order.delivery_address.street %>, <%= @order.delivery_address.number %> - <%= @order.delivery_address.neighborhood %></p>
 <p><strong>Método de pagamento:</strong> <%= Order.payment_methods.key(@order.payment_method_before_type_cast).to_s.titleize %></p>
 
-
+<% if current_user.client? && @order.pendente? %>
+  <%= button_to "Cancelar Pedido", order_path(@order), method: :patch,
+      params: { order: { status: :cancelado } },
+      data: { confirm: "Tem certeza que deseja cancelar o pedido?" } %>
+<% end %>
