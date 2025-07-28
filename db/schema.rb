@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_28_013713) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_28_021820) do
   create_table "addresses", force: :cascade do |t|
     t.string "street"
     t.string "number"
@@ -43,7 +43,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_013713) do
     t.datetime "updated_at", null: false
     t.string "status"
     t.integer "quantity"
+    t.integer "food_id", null: false
     t.index ["delivery_address_id"], name: "index_orders_on_delivery_address_id"
+    t.index ["food_id"], name: "index_orders_on_food_id"
     t.index ["pickup_address_id"], name: "index_orders_on_pickup_address_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
@@ -65,5 +67,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_013713) do
   add_foreign_key "foods", "users"
   add_foreign_key "orders", "addresses", column: "delivery_address_id"
   add_foreign_key "orders", "addresses", column: "pickup_address_id"
+  add_foreign_key "orders", "foods"
   add_foreign_key "orders", "users"
 end

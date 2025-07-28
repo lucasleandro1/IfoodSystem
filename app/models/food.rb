@@ -1,8 +1,6 @@
 class Food < ApplicationRecord
   belongs_to :user
-
-  has_many :order_foods
-  has_many :orders, through: :order_foods
+  has_many :orders, dependent: :destroy
 
   validates :name, :price, presence: true
   validates :description, presence: true

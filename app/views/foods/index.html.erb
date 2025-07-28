@@ -7,7 +7,7 @@
     <li>
       <strong><%= food.name %></strong> - <%= number_to_currency(food.price) %>
       <%= link_to 'Ver detalhes', food_path(food) %> |
-      <%= link_to 'Adicionar Pedido', new_order_path(food_id: food.id) %>
+      <%= link_to 'Criar pedido', new_order_path(food_id: food.id) %>
     </li>
   <% end %>
   </ul>

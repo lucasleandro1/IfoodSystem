@@ -1,9 +1,23 @@
 <h1>Finalizar Pedido</h1>
 
 <p><strong>Produto:</strong> <%= @food.name %></p>
-<p><strong>Preço:</strong> R$ <%= number_to_currency(@food.price) %></p>
 
 <%= form_with model: @order, url: orders_path(food_id: @food.id) do |f| %>
+
+  <div>
+    <label>Valor total estimado:</label>
+    <span id="estimated_value">
+      <%= number_to_currency(@food.price, unit: "R$") %>
+    </span>
+  </div>
+
+  <div>
+    <%= f.label :quantity, "Quantidade" %>
+    <%= f.number_field :quantity, min: 1, value: 1 %>
+  </div>
+
+  <%= f.hidden_field :estimated_value, id: "order_estimated_value_hidden", value: @food.price %>
+
   <div>
     <%= f.label :pickup_address_id, "Endereço de Coleta" %>
     <%= f.collection_select :pickup_address_id, @restaurant_addresses, :id,
@@ -23,3 +37,30 @@
 
   <%= f.submit "Finalizar Pedido" %>
 <% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const quantityInput = document.getElementById("order_quantity");
+    const estimatedValueSpan = document.getElementById("estimated_value");
+    const hiddenEstimatedValue = document.getElementById("order_estimated_value_hidden");
+
+    const unitPrice = <%= @food.price.to_f %>;
+
+    function updateEstimatedValue() {
+      const quantity = parseInt(quantityInput.value) || 1;
+      const total = unitPrice * quantity;
+
+      estimatedValueSpan.textContent = total.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+
+      if (hiddenEstimatedValue) {
+        hiddenEstimatedValue.value = total;
+      }
+    }
+
+    quantityInput.addEventListener("input", updateEstimatedValue);
+    updateEstimatedValue();
+  });
+</script>

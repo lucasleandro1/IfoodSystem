@@ -1,6 +1,7 @@
 <h1>Detalhes do Pedido</h1>
 
 <p><strong>Produto:</strong> <%= @order.item_description %></p>
+<p><strong>Quantidade:</strong> <%= @order.quantity %></p>
 <p><strong>Valor estimado:</strong> <%= number_to_currency(@order.estimated_value) %></p>
 <p><strong>Coleta:</strong> <%= @order.pickup_address.street %>, <%= @order.pickup_address.number %> - <%= @order.pickup_address.neighborhood %></p>
 <p><strong>Entrega:</strong> <%= @order.delivery_address.street %>, <%= @order.delivery_address.number %> - <%= @order.delivery_address.neighborhood %></p>
