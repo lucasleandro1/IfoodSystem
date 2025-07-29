@@ -57,6 +57,14 @@
             </div>
           <% end %>
         </div>
+        
+        <!-- Pagination -->
+        <div class="d-flex flex-column align-items-center mt-4">
+          <div class="pagination-info mb-3">
+            Página <%= @restaurantes.current_page %> de <%= @restaurantes.total_pages %> - Total: <%= @restaurantes.total_count %> restaurantes
+          </div>
+          <%= paginate @restaurantes %>
+        </div>
       <% else %>
         <div class="text-center py-5">
           <div class="mb-4">

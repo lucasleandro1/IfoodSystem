@@ -1,6 +1,6 @@
 class RestaurantesController < ApplicationController
   def index
-    @restaurantes = User.where(role: :restaurante)
+    @restaurantes = User.where(role: :restaurante).page(params[:page]).per(9)
   end
 
   def show

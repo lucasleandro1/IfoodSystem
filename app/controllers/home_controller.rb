@@ -20,6 +20,6 @@ class HomeController < ApplicationController
       @foods = @foods.order("foods.created_at DESC")
     end
 
-    @foods = @foods.page(params[:page]).per(12) if defined?(Kaminari)
+    @foods = @foods.page(params[:page]).per(8)
   end
 end

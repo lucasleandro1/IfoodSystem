@@ -22,6 +22,9 @@ gem "jbuilder"
 
 # Devise is a flexible authentication solution for Rails based on Warden [https://github.com/heartcombo/devise]
 gem "devise", "4.9.4"
+# Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator [https://github.com/kaminari/kaminari]
+gem "kaminari"
+gem "kaminari-bootstrap", "~> 3.0.1"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

@@ -35,6 +35,7 @@ class OrdersController < ApplicationController
     end
 
     @orders = @orders.order(created_at: :desc)
+    @orders = @orders.page(params[:page]).per(6)
 
     if current_user.cliente?
       @restaurantes = User.joins(:foods, foods: :orders)

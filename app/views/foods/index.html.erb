@@ -33,7 +33,7 @@
                       </span>
                       <div class="btn-group" role="group">
                         <% if current_user.restaurante? %>
-                          <%= link_to edit_food_path(food), class: "btn btn-outline-warning btn-sm" do %>
+                          <%= link_to edit_food_path(food), class: "btn btn-outline-warning btn-sm me-1" do %>
                             <i class="fas fa-edit"></i>
                           <% end %>
                           <%= button_to food_path(food), method: :delete, 
@@ -56,6 +56,14 @@
                 </div>
               </div>
             <% end %>
+          </div>
+          
+          <!-- Pagination -->
+          <div class="d-flex flex-column align-items-center mt-4">
+            <div class="pagination-info mb-3">
+              Página <%= @foods.current_page %> de <%= @foods.total_pages %> - Total: <%= @foods.total_count %> comidas
+            </div>
+            <%= paginate @foods %>
           </div>
         <% else %>
           <div class="text-center py-5">

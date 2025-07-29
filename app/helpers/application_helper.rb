@@ -1,7 +1,8 @@
 module ApplicationHelper
   def split_name(email)
+    return "Visitante" if email.blank?
     nome = email.split("@").first
-    nome
+    nome.humanize
   end
 
   def status_badge_class(status)

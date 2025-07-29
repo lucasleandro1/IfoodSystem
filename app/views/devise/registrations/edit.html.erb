@@ -1,61 +1,162 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<div class="row justify-content-center">
+  <div class="col-md-10 col-lg-8">
+    <div class="card auth-card">
+      <div class="card-body">
+        <div class="text-center mb-4">
+          <h2 class="card-title">
+            <i class="fas fa-user-edit me-2"></i>Editar Perfil
+          </h2>
+          <p class="text-muted">Atualize suas informações pessoais</p>
+        </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "needs-validation", novalidate: true }) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= f.label :email, "E-mail", class: "form-label" %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+                                  class: "form-control", placeholder: "seu@email.com" %>
+              </div>
+            </div>
+
+            <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+              <div class="col-12">
+                <div class="alert alert-warning">
+                  <i class="fas fa-exclamation-triangle me-2"></i>
+                  Aguardando confirmação para: <%= resource.unconfirmed_email %>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= f.label :password, "Nova Senha", class: "form-label" %>
+                <%= f.password_field :password, autocomplete: "new-password", 
+                                    class: "form-control", placeholder: "Digite a nova senha" %>
+                <div class="form-text">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Deixe em branco se não quiser alterar
+                  <% if @minimum_password_length %>
+                    | Mínimo de <%= @minimum_password_length %> caracteres
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= f.label :password_confirmation, "Confirmar Nova Senha", class: "form-label" %>
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", 
+                                    class: "form-control", placeholder: "Confirme a nova senha" %>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-4">
+                <%= f.label :current_password, "Senha Atual", class: "form-label" %>
+                <%= f.password_field :current_password, autocomplete: "current-password", 
+                                    class: "form-control", placeholder: "Digite sua senha atual", required: true %>
+                <div class="form-text">
+                  <i class="fas fa-shield-alt me-1"></i>
+                  Precisamos da sua senha atual para confirmar as alterações
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+            <%= link_to "Cancelar", :back, class: "btn btn-outline-secondary" %>
+            <%= f.submit "Atualizar Perfil", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+
+        <hr class="my-4">
+          <div class="card-body">
+            <%= button_to registration_path(resource_name), 
+                         method: :delete,
+                         class: "btn btn-danger",
+                         data: { confirm: "Tem certeza que deseja cancelar sua conta? Esta ação não pode ser desfeita." } do %>
+              <i class="fas fa-user-times me-2"></i>Cancelar Minha Conta
+            <% end %>
+          </div>
+      </div>
+    </div>
+
+    <div class="card auth-card mt-4">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="fas fa-map-marker-alt me-2"></i>Meus Endereços
+          </h5>
+          <%= link_to new_address_path, class: "btn btn-success btn-sm" do %>
+            <i class="fas fa-plus me-2"></i>Novo Endereço
+          <% end %>
+        </div>
+      </div>
+      <div class="card-body">
+        <% if current_user.addresses.any? %>
+          <div class="row">
+            <% current_user.addresses.each do |address| %>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100 border-left-primary">
+                  <div class="card-body">
+                    <h6 class="card-title text-primary">
+                      <i class="fas fa-home me-2"></i>
+                      <%= address.street %>, <%= address.number %>
+                    </h6>
+                    <p class="card-text text-muted mb-3">
+                      <i class="fas fa-map me-1"></i>
+                      <%= address.neighborhood %>
+                    </p>
+                    <div class="d-flex gap-2">
+                      <%= link_to edit_address_path(address), class: "btn btn-outline-primary btn-sm" do %>
+                        <i class="fas fa-edit me-1"></i>Editar
+                      <% end %>
+                      <%= button_to address_path(address), 
+                          method: :delete,
+                          class: "btn btn-outline-danger btn-sm",
+                          data: { confirm: "Tem certeza que deseja excluir este endereço?" } do %>
+                        <i class="fas fa-trash me-1"></i>Excluir
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-4">
+            <div class="mb-3">
+              <i class="fas fa-map-marker-alt fa-3x text-muted"></i>
+            </div>
+            <h6 class="text-muted mb-2">Nenhum endereço cadastrado</h6>
+            <p class="text-muted mb-3">
+              Cadastre um endereço para facilitar seus pedidos e entregas.
+            </p>
+            <%= link_to new_address_path, class: "btn btn-primary" do %>
+              <i class="fas fa-plus me-2"></i>Cadastrar Primeiro Endereço
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
+</div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<h1>Meus Endereços</h1>
-
-<% if current_user.addresses.any? %>
-  <ul>
-    <% current_user.addresses.each do |address| %>
-      <li>
-        <strong><%= address.street %>, <%= address.number %> - <%= address.neighborhood %></strong>
-        <%= link_to 'Editar', edit_address_path(address) %> |
-        <%= button_to 'Excluir', address_path(address), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>Você não tem endereços cadastrados.</p>
-<% end %>
-
-<%= link_to 'Cadastrar Novo Endereço', new_address_path %>
-
-<%= link_to "Back", :back %>
+<script>
+  (() => {
+    'use strict';
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.prototype.slice.call(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  })();
+</script>

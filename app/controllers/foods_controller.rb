@@ -5,6 +5,7 @@ class FoodsController < ApplicationController
 
   def index
     @foods = current_user.cliente? ? Food.all : current_user.foods
+    @foods = @foods.page(params[:page]).per(10)
   end
 
   def new

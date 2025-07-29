@@ -6,6 +6,15 @@
           <i class="fas fa-clipboard-list me-2"></i>
           <%= current_user.restaurante? ? "Pedidos Recebidos" : "Meus Pedidos" %>
         </h1>
+        <% if current_user %>
+          <div class="alert alert-info d-flex align-items-center">
+            <i class="fas fa-user-circle me-2"></i>
+            <div>
+              <strong>Olá, <%= split_name(current_user.email) %>!</strong>
+              <span class="badge bg-secondary ms-2"><%= current_user.role.humanize %></span>
+            </div>
+          </div>
+        <% end %>
       </div>
 
       <div class="card mb-4">
@@ -62,7 +71,7 @@
       <% if @orders.any? %>
         <div class="alert alert-info">
           <i class="fas fa-info-circle me-2"></i>
-          <strong><%= @orders.count %></strong> pedido(s) encontrado(s)
+          <strong><%= @orders.total_count %></strong> pedido(s) encontrado(s)
           <% if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurante_id].present? %>
             com os filtros aplicados
           <% end %>
@@ -176,6 +185,14 @@
               </div>
             </div>
           <% end %>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="d-flex flex-column align-items-center mt-4">
+          <div class="pagination-info mb-3">
+            Página <%= @orders.current_page %> de <%= @orders.total_pages %> - Total: <%= @orders.total_count %> pedidos
+          </div>
+          <%= paginate @orders %>
         </div>
       <% else %>
         <div class="text-center py-5">
