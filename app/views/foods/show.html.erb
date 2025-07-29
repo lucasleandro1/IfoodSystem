@@ -1,12 +1,58 @@
-<h1><%= @food.name %></h1>
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">
+            <i class="fas fa-utensils me-2"></i><%= @food.name %>
+          </h3>
+          <span class="badge bg-primary fs-6">
+            R$ <%= number_to_currency(@food.price, unit: "", precision: 2) %>
+          </span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <h6 class="text-muted">Restaurante</h6>
+          <p class="mb-0">
+            <i class="fas fa-store me-2"></i>
+            <strong><%= @food.user.email.split('@').first.humanize %></strong>
+          </p>
+        </div>
 
-<p><strong>Descrição:</strong> <%= @food.description %></p>
-<p><strong>Preço:</strong> <%= number_to_currency(@food.price) %></p>
-<p><strong>Restaurante</strong> <%= @food.user.email %></p>
+        <div class="mb-4">
+          <h6 class="text-muted">Descrição</h6>
+          <p class="mb-0"><%= @food.description %></p>
+        </div>
 
-<% if current_user.client? %>
-  <%= link_to 'Criar pedido', new_order_path(food_id: @food.id) %>
-<% elsif current_user.restaurant? %>
-  <%= link_to 'Editar', edit_food_path(@food) %> |
-  <%= button_to 'Excluir', food_path(@food), method: :delete, data: { confirm: "Tem certeza?" } %>
-<% end %>
+        <div class="d-flex gap-2">
+          <% if current_user.client? %>
+            <%= link_to new_order_path(food_id: @food.id), class: "btn btn-success" do %>
+              <i class="fas fa-shopping-cart me-2"></i>Fazer Pedido
+            <% end %>
+            <%= link_to foods_path, class: "btn btn-outline-secondary" do %>
+              <i class="fas fa-arrow-left me-2"></i>Voltar
+            <% end %>
+          <% elsif current_user.restaurant? && @food.user == current_user %>
+            <%= link_to edit_food_path(@food), class: "btn btn-warning" do %>
+              <i class="fas fa-edit me-2"></i>Editar
+            <% end %>
+            <%= button_to food_path(@food), method: :delete, 
+                         class: "btn btn-danger", 
+                         data: { confirm: "Tem certeza que deseja excluir esta comida?" },
+                         form: { style: "display: inline-block;" } do %>
+              <i class="fas fa-trash me-2"></i>Excluir
+            <% end %>
+            <%= link_to foods_path, class: "btn btn-outline-secondary" do %>
+              <i class="fas fa-arrow-left me-2"></i>Voltar
+            <% end %>
+          <% else %>
+            <%= link_to foods_path, class: "btn btn-outline-secondary" do %>
+              <i class="fas fa-arrow-left me-2"></i>Voltar
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
