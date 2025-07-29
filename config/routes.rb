@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :orders do
     collection do
       get :restaurant_index
+      get :user_orders
     end
   end
   resources :foods
