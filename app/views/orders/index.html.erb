@@ -1,28 +1,111 @@
-<% if @order.present?%>
- <h1>Não ha pedidos</h1>
-  <%else%>
+<% if @orders.empty? %>
+  <h1>Não há pedidos</h1>
+<% else %>
   <h1>Pedidos</h1>
-  <% @orders.each do |order| %>
+  
+  <div style="background: #f8f9fa; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+    <%= form_with url: orders_path, method: :get, local: true do |f| %>
+      <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: end;">
+        
+        <div>
+          <%= f.label :status, "Status:" %>
+          <%= f.select :status, options_for_select([
+            ['Todos', ''],
+            ['Pendente', 'pendente'],
+            ['Preparando', 'preparando'],
+            ['Em Rota', 'em_rota'],
+            ['Entregue', 'entregue'],
+            ['Cancelado', 'cancelado']
+          ], params[:status]), {}, { style: "margin-left: 5px;" } %>
+        </div>
 
-    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-      <p><strong>Horario:</strong> <%= order.requested_at.strftime("%H:%M") %></p>
-      <p><strong>Comida:</strong> <%= order.item_description %></p>
-      <p><strong>Quantidade:</strong> <%= order.quantity %></p>
-      <p><strong>Valor:</strong> <%= number_to_currency(order.estimated_value) %></p>
-      <p><strong>Status:</strong> <%= order.status&.humanize || "Indefinido" %></p>
+        <div>
+          <%= f.label :period, "Período:" %>
+          <%= f.select :period, options_for_select([
+            ['Todos', ''],
+            ['Hoje', 'today'],
+            ['Última semana', 'week'],
+            ['Último mês', 'month']
+          ], params[:period]), {}, { style: "margin-left: 5px;" } %>
+        </div>
+
+        <div>
+          <%= f.label :date, "Data específica:" %>
+          <%= f.date_field :date, value: params[:date], style: "margin-left: 5px;" %>
+        </div>
+
+        <% if current_user.client? && @restaurants.present? %>
+          <div>
+            <%= f.label :restaurant_id, "Restaurante:" %>
+            <%= f.select :restaurant_id, 
+                options_from_collection_for_select(@restaurants, :id, :email, params[:restaurant_id]),
+                { prompt: 'Todos os restaurantes' }, 
+                { style: "margin-left: 5px;" } %>
+          </div>
+        <% end %>
+
+        <div>
+          <%= f.submit "Filtrar", style: "padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;" %>
+          <%= link_to "Limpar", orders_path, style: "padding: 8px 16px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-left: 5px;" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <p style="margin-bottom: 15px; color: #666;">
+    <strong><%= @orders.count %></strong> pedido(s) encontrado(s)
+    <% if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurant_id].present? %>
+      com os filtros aplicados
+    <% end %>
+  </p>
+
+  <% @orders.each do |order| %>
+    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 5px;">
+      <div style="display: flex; justify-content: space-between; align-items: start;">
+        <div>
+          <p><strong>Data/Hora:</strong> <%= order.requested_at.strftime("%d/%m/%Y às %H:%M") %></p>
+          <p><strong>Comida:</strong> <%= order.item_description %></p>
+          <% if current_user.client? %>
+            <p><strong>Restaurante:</strong> <%= order.food.user.email %></p>
+          <% else %>
+            <p><strong>Cliente:</strong> <%= order.user.email %></p>
+          <% end %>
+          <p><strong>Quantidade:</strong> <%= order.quantity %></p>
+          <p><strong>Valor:</strong> <%= number_to_currency(order.estimated_value) %></p>
+          <p><strong>Status:</strong> 
+            <span style="background: <%= status_color(order.status) %>; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">
+              <%= order.status&.humanize || "Indefinido" %>
+            </span>
+          </p>
+          <p><strong>Coleta:</strong> <%= "#{order.pickup_address.street}, #{order.pickup_address.number} - #{order.pickup_address.neighborhood}" %></p>
+          <p><strong>Entrega:</strong> <%= "#{order.delivery_address.street}, #{order.delivery_address.number} - #{order.delivery_address.neighborhood}" %></p>
+        </div>
+        
+        <div style="margin-left: 20px;">
+          <%= link_to "Ver detalhes", order_path(order), style: "padding: 8px 16px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; display: inline-block; margin-bottom: 5px;" %>
+        </div>
+      </div>
 
       <% if current_user.restaurant? %>
-        <%= form_with model: order, url: order_path(order), method: :patch, local: true do |f| %>
-          <div>
+        <%= form_with model: order, url: order_path(order), method: :patch, local: true, style: "margin-top: 15px;" do |f| %>
+          <div style="display: flex; gap: 10px; align-items: end;">
             <%= f.label :status, "Atualizar status:" %>
-            <%= f.select :status, Order.statuses.keys.map { |s| [s.humanize, s] }, selected: order.status %>
-            <%= f.submit "Atualizar", class: "btn btn-sm btn-primary" %>
+            <%= f.select :status, Order.statuses.keys.map { |s| [s.humanize, s] }, 
+                { selected: order.status }, 
+                { style: "margin-left: 5px;" } %>
+            <%= f.submit "Atualizar", style: "padding: 6px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;" %>
           </div>
         <% end %>
       <% end %>
 
       <% if current_user.client? && order.pendente? %>
-        <%= button_to 'Cancelar Pedido', order_path(order), method: :patch, params: { order: { status: 'cancelado' } }, data: { confirm: 'Tem certeza que deseja cancelar o pedido?' } %>
+        <div style="margin-top: 15px;">
+          <%= button_to 'Cancelar Pedido', order_path(order), 
+              method: :patch, 
+              params: { order: { status: 'cancelado' } }, 
+              data: { confirm: 'Tem certeza que deseja cancelar o pedido?' },
+              style: "padding: 6px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;" %>
+        </div>
       <% end %>
     </div>
   <% end %>
