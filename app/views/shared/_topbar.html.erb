@@ -9,14 +9,38 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
-          <%= link_to "Início", root_path, class: "nav-link" %>
-          <%= link_to "Pedidos", orders_path, class: "nav-link"%>
-          <%= link_to "Comidas", foods_path, class: "nav-link"%>
-          <%= link_to "Restaurantes", restaurants_path, class: "nav-link" if current_user.client?%>
-          <%= link_to "Perfil", edit_user_registration_path, class: "nav-link"%>
-          <%= button_to "Logout", destroy_user_session_path, method: :delete %>
+          <li class="nav-item">
+            <%= link_to "Início", root_path, class: "nav-link" %>
+          </li>
+          <% if current_user.client? %>
+            <li class="nav-item">
+              <%= link_to "Restaurantes", restaurants_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Pedidos", orders_path, class: "nav-link" %>
+            </li>
+          <% end %>
+          <li class="nav-item">
+            <%= link_to "Comidas", foods_path, class: "nav-link" if current_user.restaurant? %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Perfil", edit_user_registration_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, 
+                          class: "btn btn-outline-light btn-sm ms-2" %>
+          </li>
         <% else %>
-          <%= link_to "Entrar", new_user_session_path, class: "nav-link" %>
+          <li class="nav-item">
+            <%= link_to "Início", root_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Entrar", new_user_session_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Cadastrar", new_user_registration_path, 
+                        class: "btn btn-outline-light btn-sm ms-2" %>
+          </li>
         <% end %>
       </ul>
     </div>

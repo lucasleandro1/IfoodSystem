@@ -1,9 +1,106 @@
-<h2><%= @restaurant.email %></h2>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>
+          <i class="fas fa-store me-2"></i>
+          <%= split_name(@restaurant.email) %>
+        </h1>
+        <%= link_to restaurants_path, class: "btn btn-outline-secondary" do %>
+          <i class="fas fa-arrow-left me-2"></i>Voltar
+        <% end %>
+      </div>
 
-<h3>Pratos</h3>
-<% @foods.each do |food| %>
-  <div>
-    <%= link_to 'Criar pedido', new_order_path(food_id: food.id) %>
-    <p><%= food.name %> - R$ <%= food.price %></p>
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">
+            <i class="fas fa-info-circle me-2"></i>Informações do Restaurante
+          </h5>
+          <div class="row">
+            <div class="col-md-6">
+              <p class="mb-2">
+                <i class="fas fa-envelope me-2 text-muted"></i>
+                <strong>Email:</strong> <%= @restaurant.email %>
+              </p>
+              <p class="mb-2">
+                <i class="fas fa-user-tag me-2 text-muted"></i>
+                <strong>Tipo:</strong> 
+                <span class="badge bg-success">Restaurante</span>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <% if @restaurant.addresses.any? %>
+                <h6 class="text-muted">
+                  <i class="fas fa-map-marker-alt me-2"></i>Endereços:
+                </h6>
+                <% @restaurant.addresses.each do |address| %>
+                  <p class="text-muted small mb-1">
+                    <%= address.address_line %>
+                  </p>
+                <% end %>
+              <% else %>
+                <p class="text-muted">
+                  <i class="fas fa-info-circle me-2"></i>
+                  Nenhum endereço cadastrado
+                </p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cardápio -->
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="fas fa-utensils me-2"></i>Cardápio
+            <span class="badge bg-primary ms-2"><%= @foods.count %></span>
+          </h5>
+        </div>
+        <div class="card-body">
+          <% if @foods.any? %>
+            <div class="row">
+              <% @foods.each do |food| %>
+                <div class="col-md-6 col-lg-4 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="card-title text-primary">
+                        <%= food.name %>
+                      </h6>
+                      <% if food.description.present? %>
+                        <p class="card-text text-muted small">
+                          <%= truncate(food.description, length: 80) %>
+                        </p>
+                      <% end %>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span class="price-tag fw-bold">
+                          R$ <%= number_to_currency(food.price, unit: "", precision: 2) %>
+                        </span>
+                        <% if current_user.client? %>
+                          <%= link_to new_order_path(food_id: food.id), 
+                              class: "btn btn-primary btn-sm" do %>
+                            <i class="fas fa-shopping-cart me-1"></i>Pedir
+                          <% end %>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-4">
+              <div class="mb-3">
+                <i class="fas fa-utensils fa-3x text-muted"></i>
+              </div>
+              <h5 class="text-muted mb-2">Cardápio em construção</h5>
+              <p class="text-muted">
+                Este restaurante ainda não possui pratos disponíveis.
+              </p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-<% end %>
+</div>

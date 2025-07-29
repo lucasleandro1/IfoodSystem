@@ -1,12 +1,78 @@
-<h1>Atualizar Status do Pedido</h1>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title mb-0">
+            <i class="fas fa-edit me-2"></i>Atualizar Status do Pedido
+          </h2>
+        </div>
+        <div class="card-body">
+          <%= form_with model: @order, local: true, class: "needs-validation", novalidate: true do |form| %>
+            <% if @order.errors.any? %>
+              <div class="alert alert-danger">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i>Erro ao atualizar pedido:</h5>
+                <ul class="mb-0">
+                  <% @order.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
 
-<%= form_with model: @order, local: true do |form| %>
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.select :status, Order.statuses.keys.map { |s| [s.humanize, s] } %>
-  </div>
+            <div class="mb-4">
+              <div class="alert alert-info">
+                <h6 class="mb-1">Pedido #<%= @order.id %></h6>
+                <p class="mb-0 small">
+                  <strong>Cliente:</strong> <%= split_name(@order.user.email) %><br>
+                  <strong>Produto:</strong> <%= @order.item_description %><br>
+                  <strong>Status Atual:</strong> 
+                  <span class="badge bg-<%= status_badge_class(@order.status) %>">
+                    <%= @order.status&.humanize || "Indefinido" %>
+                  </span>
+                </p>
+              </div>
+            </div>
 
-  <div class="actions">
-    <%= form.submit "Atualizar" %>
+            <div class="mb-4">
+              <%= form.label :status, class: "form-label" do %>
+                <i class="fas fa-clipboard-check me-2"></i>Novo Status
+              <% end %>
+              <%= form.select :status, 
+                  Order.statuses.keys.map { |s| [s.humanize, s] }, 
+                  { selected: @order.status }, 
+                  { class: "form-select", required: true } %>
+              <div class="form-text">
+                Selecione o novo status para este pedido.
+              </div>
+              <div class="invalid-feedback">
+                Por favor, selecione um status válido.
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <%= link_to "Cancelar", order_path(@order), class: "btn btn-outline-secondary" %>
+              <%= form.submit "Atualizar Status", class: "btn btn-primary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-<% end %>
+</div>
+
+<script>
+  (() => {
+    'use strict';
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.prototype.slice.call(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  })();
+</script>
