@@ -4,20 +4,20 @@ module ApplicationHelper
     nome
   end
 
-  def status_color(status)
+  def status_badge_class(status)
     case status
-    when 'pendente'
-      '#ffc107'
-    when 'preparando'
-      '#fd7e14'
-    when 'em_rota'
-      '#0dcaf0'
-    when 'entregue'
-      '#198754'
-    when 'cancelado'
-      '#dc3545'
+    when "pendente"
+      "warning"
+    when "preparando"
+      "info"
+    when "em_rota"
+      "primary"
+    when "entregue"
+      "success"
+    when "cancelado"
+      "danger"
     else
-      '#6c757d'
+      "secondary"
     end
   end
 end
