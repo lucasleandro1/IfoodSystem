@@ -1,74 +1,157 @@
-<h1>Finalizar Pedido</h1>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title mb-0">
+            <i class="fas fa-shopping-cart me-2"></i>Finalizar Pedido
+          </h2>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            <h5 class="mb-1">
+              <i class="fas fa-utensils me-2"></i>Produto Selecionado
+            </h5>
+            <p class="mb-0"><strong><%= @food.name %></strong></p>
+            <small class="text-muted">Preço unitário: R$ <%= number_to_currency(@food.price, unit: "", precision: 2) %></small>
+          </div>
 
-<p><strong>Produto:</strong> <%= @food.name %></p>
+          <%= form_with model: @order, url: orders_path(food_id: @food.id), local: true, class: "needs-validation", novalidate: true do |f| %>
+            <% if @order.errors.any? %>
+              <div class="alert alert-danger">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i>Erro ao criar pedido:</h5>
+                <ul class="mb-0">
+                  <% @order.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
 
-<%= form_with model: @order, url: orders_path(food_id: @food.id) do |f| %>
-  <% if @order.errors.any? %>
-    <div class="errors" style="color: red; margin-bottom: 20px;">
-      <h2><%= pluralize(@order.errors.count, "erro") %> proibiram esse pedido de ser criado:</h2>
-      <ul>
-        <% @order.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= f.label :quantity, class: "form-label" do %>
+                    <i class="fas fa-sort-numeric-up me-2"></i>Quantidade
+                  <% end %>
+                  <%= f.number_field :quantity, 
+                      min: 1, 
+                      value: 1, 
+                      required: true, 
+                      class: "form-control",
+                      id: "order_quantity" %>
+                  <div class="invalid-feedback">
+                    Por favor, informe uma quantidade válida.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">
+                    <i class="fas fa-dollar-sign me-2"></i>Valor Total Estimado
+                  </label>
+                  <div class="form-control bg-light" style="font-size: 1.1rem; font-weight: bold;" id="estimated_value">
+                    R$ <%= number_to_currency(@food.price, unit: "", precision: 2) %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <%= f.hidden_field :estimated_value, id: "order_estimated_value_hidden", value: @food.price %>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= f.label :pickup_address_id, class: "form-label" do %>
+                    <i class="fas fa-map-marker-alt me-2"></i>Endereço de Coleta
+                  <% end %>
+                  <%= f.collection_select :pickup_address_id,
+                      @restaurant_addresses,
+                      :id,
+                      ->(a) { a.address_line },
+                      { prompt: "Selecione um endereço de coleta" },
+                      { required: true, class: "form-select" } %>
+                  <div class="invalid-feedback">
+                    Por favor, selecione um endereço de coleta.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= f.label :delivery_address_id, class: "form-label" do %>
+                    <i class="fas fa-home me-2"></i>Endereço de Entrega
+                  <% end %>
+                  <%= f.collection_select :delivery_address_id, 
+                      @client_addresses, 
+                      :id,
+                      ->(a) { a.address_line }, 
+                      { prompt: "Selecione um endereço de entrega" }, 
+                      { required: true, class: "form-select" } %>
+                  <div class="invalid-feedback">
+                    Por favor, selecione um endereço de entrega.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= f.label :payment_method, class: "form-label" do %>
+                    <i class="fas fa-credit-card me-2"></i>Método de Pagamento
+                  <% end %>
+                  <%= f.select :payment_method, 
+                      Order.payment_methods.keys.map { |m| [m.titleize, m] }, 
+                      { prompt: "Selecione um método de pagamento" }, 
+                      { required: true, class: "form-select" } %>
+                  <div class="invalid-feedback">
+                    Por favor, selecione um método de pagamento.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <%= link_to "Cancelar", root_path, class: "btn btn-outline-secondary" %>
+              <%= f.submit "Finalizar Pedido", class: "btn btn-primary" do %>
+                <i class="fas fa-check me-2"></i>Finalizar Pedido
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <div>
-    <label>Valor total estimado:</label>
-    <span id="estimated_value">
-      <%= number_to_currency(@food.price, unit: "R$") %>
-    </span>
   </div>
-
-  <div>
-    <%= f.label :quantity, "Quantidade" %>
-    <%= f.number_field :quantity, min: 1, value: 1, required: true %>
-  </div>
-
-  <%= f.hidden_field :estimated_value, id: "order_estimated_value_hidden", value: @food.price %>
-
-  <div>
-    <%= f.label :pickup_address_id, "Endereço de Coleta" %>
-    <%= f.collection_select :pickup_address_id, @restaurant_addresses, :id,
-      ->(a) { "#{a.street}, #{a.number} - #{a.neighborhood}" }, 
-      { prompt: "Selecione um endereço de coleta" }, 
-      { required: true } %>
-  </div>
-
-  <div>
-    <%= f.label :delivery_address_id, "Endereço de Entrega" %>
-    <%= f.collection_select :delivery_address_id, @client_addresses, :id,
-      ->(a) { "#{a.street}, #{a.number} - #{a.neighborhood}" }, 
-      { prompt: "Selecione um endereço de entrega" }, 
-      { required: true } %>
-  </div>
-
-  <div>
-    <%= f.label :payment_method, "Método de Pagamento" %>
-    <%= f.select :payment_method, Order.payment_methods.keys.map { |m| [m.titleize, m] }, 
-        { prompt: "Selecione um método de pagamento" }, 
-        { required: true } %>
-  </div>
-
-  <%= f.submit "Finalizar Pedido" %>
-<% end %>
+</div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+  function initializeOrderCalculator() {
+    console.log('Inicializando calculadora de pedido...');
+    
     const quantityInput = document.getElementById("order_quantity");
     const estimatedValueSpan = document.getElementById("estimated_value");
     const hiddenEstimatedValue = document.getElementById("order_estimated_value_hidden");
 
+    if (!quantityInput || !estimatedValueSpan) {
+      console.error('Elementos não encontrados:', {
+        quantityInput: !!quantityInput,
+        estimatedValueSpan: !!estimatedValueSpan
+      });
+      return;
+    }
+
     const unitPrice = <%= @food.price.to_f %>;
+    console.log('Preço unitário:', unitPrice);
 
     function updateEstimatedValue() {
       const quantity = parseInt(quantityInput.value) || 1;
       const total = unitPrice * quantity;
+      
+      console.log('Atualizando valor:', { quantity, total });
 
-      estimatedValueSpan.textContent = total.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
+      estimatedValueSpan.textContent = "R$ " + total.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
       });
 
       if (hiddenEstimatedValue) {
@@ -76,7 +159,49 @@
       }
     }
 
+    quantityInput.removeEventListener("input", updateEstimatedValue);
+    quantityInput.removeEventListener("change", updateEstimatedValue);
+    
     quantityInput.addEventListener("input", updateEstimatedValue);
+    quantityInput.addEventListener("change", updateEstimatedValue);
+    
     updateEstimatedValue();
+    
+    console.log('Calculadora inicializada com sucesso!');
+  }
+
+  function initializeFormValidation() {
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    initializeOrderCalculator();
+    initializeFormValidation();
   });
+
+  document.addEventListener("turbo:load", function() {
+    initializeOrderCalculator();
+    initializeFormValidation();
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        initializeOrderCalculator();
+        initializeFormValidation();
+      }, 100);
+    });
+  } else {
+    initializeOrderCalculator();
+    initializeFormValidation();
+  }
 </script>

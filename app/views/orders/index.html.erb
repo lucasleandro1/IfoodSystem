@@ -1,112 +1,204 @@
-<% if @orders.empty? %>
-  <h1>Não há pedidos</h1>
-<% else %>
-  <h1>Pedidos</h1>
-  
-  <div style="background: #f8f9fa; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
-    <%= form_with url: orders_path, method: :get, local: true do |f| %>
-      <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: end;">
-        
-        <div>
-          <%= f.label :status, "Status:" %>
-          <%= f.select :status, options_for_select([
-            ['Todos', ''],
-            ['Pendente', 'pendente'],
-            ['Preparando', 'preparando'],
-            ['Em Rota', 'em_rota'],
-            ['Entregue', 'entregue'],
-            ['Cancelado', 'cancelado']
-          ], params[:status]), {}, { style: "margin-left: 5px;" } %>
-        </div>
-
-        <div>
-          <%= f.label :period, "Período:" %>
-          <%= f.select :period, options_for_select([
-            ['Todos', ''],
-            ['Hoje', 'today'],
-            ['Última semana', 'week'],
-            ['Último mês', 'month']
-          ], params[:period]), {}, { style: "margin-left: 5px;" } %>
-        </div>
-
-        <div>
-          <%= f.label :date, "Data específica:" %>
-          <%= f.date_field :date, value: params[:date], style: "margin-left: 5px;" %>
-        </div>
-
-        <% if current_user.client? && @restaurants.present? %>
-          <div>
-            <%= f.label :restaurant_id, "Restaurante:" %>
-            <%= f.select :restaurant_id, 
-                options_from_collection_for_select(@restaurants, :id, :email, params[:restaurant_id]),
-                { prompt: 'Todos os restaurantes' }, 
-                { style: "margin-left: 5px;" } %>
-          </div>
-        <% end %>
-
-        <div>
-          <%= f.submit "Filtrar", style: "padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;" %>
-          <%= link_to "Limpar", orders_path, style: "padding: 8px 16px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-left: 5px;" %>
-        </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>
+          <i class="fas fa-clipboard-list me-2"></i>
+          <%= current_user.restaurant? ? "Pedidos Recebidos" : "Meus Pedidos" %>
+        </h1>
       </div>
-    <% end %>
-  </div>
 
-  <p style="margin-bottom: 15px; color: #666;">
-    <strong><%= @orders.count %></strong> pedido(s) encontrado(s)
-    <% if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurant_id].present? %>
-      com os filtros aplicados
-    <% end %>
-  </p>
+      <div class="card mb-4">
+        <div class="card-body">
+          <%= form_with url: orders_path, method: :get, local: true do |f| %>
+            <div class="row g-3">
+              <div class="col-md-2">
+                <%= f.label :status, "Status:", class: "form-label" %>
+                <%= f.select :status, options_for_select([
+                  ['Todos', ''],
+                  ['Pendente', 'pendente'],
+                  ['Preparando', 'preparando'],
+                  ['Em Rota', 'em_rota'],
+                  ['Entregue', 'entregue'],
+                  ['Cancelado', 'cancelado']
+                ], params[:status]), {}, { class: "form-select" } %>
+              </div>
 
-  <% @orders.each do |order| %>
-    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 5px;">
-      <div style="display: flex; justify-content: space-between; align-items: start;">
-        <div>
-          <p><strong>Data/Hora:</strong> <%= order.requested_at.strftime("%d/%m/%Y às %H:%M") %></p>
-          <p><strong>Comida:</strong> <%= order.item_description %></p>
-          <% if current_user.client? %>
-            <p><strong>Restaurante:</strong> <%= order.food.user.email %></p>
-          <% else %>
-            <p><strong>Cliente:</strong> <%= order.user.email %></p>
+              <div class="col-md-2">
+                <%= f.label :period, "Período:", class: "form-label" %>
+                <%= f.select :period, options_for_select([
+                  ['Todos', ''],
+                  ['Hoje', 'today'],
+                  ['Última semana', 'week'],
+                  ['Último mês', 'month']
+                ], params[:period]), {}, { class: "form-select" } %>
+              </div>
+
+              <div class="col-md-2">
+                <%= f.label :date, "Data específica:", class: "form-label" %>
+                <%= f.date_field :date, value: params[:date], class: "form-control" %>
+              </div>
+
+              <% if current_user.client? && @restaurants.present? %>
+                <div class="col-md-3">
+                  <%= f.label :restaurant_id, "Restaurante:", class: "form-label" %>
+                  <%= f.select :restaurant_id, 
+                      options_from_collection_for_select(@restaurants, :id, 
+                        lambda { |r| r.email.split('@').first.humanize }, params[:restaurant_id]),
+                      { prompt: 'Todos os restaurantes' }, 
+                      { class: "form-select" } %>
+                </div>
+              <% end %>
+
+              <div class="col-md-3 d-flex gap-2 align-items-end">
+                <%= f.submit "Filtrar", class: "btn btn-primary" %>
+                <%= link_to "Limpar", orders_path, class: "btn btn-outline-secondary" %>
+              </div>
+            </div>
           <% end %>
-          <p><strong>Quantidade:</strong> <%= order.quantity %></p>
-          <p><strong>Valor:</strong> <%= number_to_currency(order.estimated_value) %></p>
-          <p><strong>Status:</strong> 
-            <span style="background: <%= status_color(order.status) %>; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">
-              <%= order.status&.humanize || "Indefinido" %>
-            </span>
-          </p>
-          <p><strong>Coleta:</strong> <%= "#{order.pickup_address.street}, #{order.pickup_address.number} - #{order.pickup_address.neighborhood}" %></p>
-          <p><strong>Entrega:</strong> <%= "#{order.delivery_address.street}, #{order.delivery_address.number} - #{order.delivery_address.neighborhood}" %></p>
-        </div>
-        
-        <div style="margin-left: 20px;">
-          <%= link_to "Ver detalhes", order_path(order), style: "padding: 8px 16px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; display: inline-block; margin-bottom: 5px;" %>
         </div>
       </div>
 
-      <% if current_user.restaurant? %>
-        <%= form_with model: order, url: order_path(order), method: :patch, local: true, style: "margin-top: 15px;" do |f| %>
-          <div style="display: flex; gap: 10px; align-items: end;">
-            <%= f.label :status, "Atualizar status:" %>
-            <%= f.select :status, Order.statuses.keys.map { |s| [s.humanize, s] }, 
-                { selected: order.status }, 
-                { style: "margin-left: 5px;" } %>
-            <%= f.submit "Atualizar", style: "padding: 6px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;" %>
-          </div>
-        <% end %>
-      <% end %>
+      <% if @orders.any? %>
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle me-2"></i>
+          <strong><%= @orders.count %></strong> pedido(s) encontrado(s)
+          <% if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurant_id].present? %>
+            com os filtros aplicados
+          <% end %>
+        </div>
 
-      <% if current_user.client? && order.pendente? %>
-        <div style="margin-top: 15px;">
-          <%= button_to 'Cancelar Pedido', order_path(order), 
-              method: :patch, 
-              params: { order: { status: 'cancelado' } }, 
-              data: { confirm: 'Tem certeza que deseja cancelar o pedido?' },
-              style: "padding: 6px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;" %>
+        <div class="row">
+          <% @orders.each do |order| %>
+            <div class="col-12 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title text-primary mb-0">
+                          Pedido #<%= order.id %>
+                        </h5>
+                        <span class="badge bg-<%= status_badge_class(order.status) %> fs-6">
+                          <%= order.status&.humanize || "Indefinido" %>
+                        </span>
+                      </div>
+
+                      <div class="row mb-3">
+                        <div class="col-md-6">
+                          <p class="mb-1">
+                            <i class="fas fa-clock text-muted me-2"></i>
+                            <strong>Data/Hora:</strong> <%= order.requested_at.strftime("%d/%m/%Y às %H:%M") %>
+                          </p>
+                          <p class="mb-1">
+                            <i class="fas fa-utensils text-muted me-2"></i>
+                            <strong>Comida:</strong> <%= order.item_description %>
+                          </p>
+                          <% if current_user.client? %>
+                            <p class="mb-1">
+                              <i class="fas fa-store text-muted me-2"></i>
+                              <strong>Restaurante:</strong> <%= order.food.user.email.split('@').first.humanize %>
+                            </p>
+                          <% else %>
+                            <p class="mb-1">
+                              <i class="fas fa-user text-muted me-2"></i>
+                              <strong>Cliente:</strong> <%= split_name(order.user.email) %>
+                            </p>
+                          <% end %>
+                        </div>
+                        <div class="col-md-6">
+                          <p class="mb-1">
+                            <i class="fas fa-sort-numeric-up text-muted me-2"></i>
+                            <strong>Quantidade:</strong> <%= order.quantity %>
+                          </p>
+                          <p class="mb-1">
+                            <i class="fas fa-dollar-sign text-muted me-2"></i>
+                            <strong>Valor:</strong> 
+                            <span class="price-tag">R$ <%= number_to_currency(order.estimated_value, unit: "", precision: 2) %></span>
+                          </p>
+                          <p class="mb-1">
+                            <i class="fas fa-credit-card text-muted me-2"></i>
+                            <strong>Pagamento:</strong> <%= order.payment_method&.humanize || "N/A" %>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <p class="mb-1 text-muted small">
+                            <i class="fas fa-map-marker-alt me-1"></i>
+                            <strong>Coleta:</strong><br>
+                            <%= order.pickup_address.address_line %>
+                          </p>
+                        </div>
+                        <div class="col-md-6">
+                          <p class="mb-1 text-muted small">
+                            <i class="fas fa-home me-1"></i>
+                            <strong>Entrega:</strong><br>
+                            <%= order.delivery_address.address_line %>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="d-flex flex-column gap-2">
+                      <% if current_user.client? %>
+                          <%= link_to order_path(order), class: "btn btn-outline-primary" do %>
+                            <i class="fas fa-eye me-2"></i>Ver Detalhes
+                          <% end %>
+                        <% end %>
+
+                        <% if current_user.restaurant? %>
+                          <%= form_with model: order, url: order_path(order), method: :patch, local: true do |f| %>
+                            <div class="d-flex gap-2">
+                              <%= f.select :status, Order.statuses.keys.map { |s| [s.humanize, s] }, 
+                                  { selected: order.status }, 
+                                  { class: "form-select form-select-sm" } %>
+                              <%= f.submit "Atualizar", class: "btn btn-sm btn-success" %>
+                            </div>
+                          <% end %>
+                        <% end %>
+
+                        <% if current_user.client? && order.pendente? %>
+                          <%= button_to order_path(order), 
+                              method: :patch, 
+                              params: { order: { status: 'cancelado' } }, 
+                              data: { confirm: 'Tem certeza que deseja cancelar o pedido?' },
+                              class: "btn btn-sm btn-danger" do %>
+                            <i class="fas fa-times me-2"></i>Cancelar Pedido
+                          <% end %>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <div class="mb-4">
+            <i class="fas fa-clipboard-list fa-4x text-muted"></i>
+          </div>
+          <h3 class="text-muted mb-3">Nenhum pedido encontrado</h3>
+          <p class="text-muted mb-4">
+            <%= if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurant_id].present?
+                  "Tente ajustar os filtros para encontrar pedidos."
+                elsif current_user.restaurant?
+                  "Ainda não há pedidos para suas comidas."
+                else
+                  "Você ainda não fez nenhum pedido."
+                end %>
+          </p>
+          <% unless current_user.restaurant? %>
+            <%= link_to root_path, class: "btn btn-primary" do %>
+              <i class="fas fa-utensils me-2"></i>Ver Comidas Disponíveis
+            <% end %>
+          <% end %>
         </div>
       <% end %>
     </div>
-  <% end %>
-<% end %>
+  </div>
+</div>
