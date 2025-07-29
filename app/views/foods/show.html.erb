@@ -13,7 +13,7 @@
       </div>
       <div class="card-body">
         <div class="mb-3">
-          <h6 class="text-muted">Restaurante</h6>
+          <h6 class="text-muted">restaurante</h6>
           <p class="mb-0">
             <i class="fas fa-store me-2"></i>
             <strong><%= @food.user.email.split('@').first.humanize %></strong>
@@ -26,14 +26,14 @@
         </div>
 
         <div class="d-flex gap-2">
-          <% if current_user.client? %>
+          <% if current_user.cliente? %>
             <%= link_to new_order_path(food_id: @food.id), class: "btn btn-success" do %>
               <i class="fas fa-shopping-cart me-2"></i>Fazer Pedido
             <% end %>
             <%= link_to foods_path, class: "btn btn-outline-secondary" do %>
               <i class="fas fa-arrow-left me-2"></i>Voltar
             <% end %>
-          <% elsif current_user.restaurant? && @food.user == current_user %>
+          <% elsif current_user.restaurante? && @food.user == current_user %>
             <%= link_to edit_food_path(@food), class: "btn btn-warning" do %>
               <i class="fas fa-edit me-2"></i>Editar
             <% end %>

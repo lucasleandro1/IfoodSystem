@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    if current_user&.restaurant?
+    if current_user&.restaurante?
       redirect_to orders_path
       return
     end
@@ -14,7 +14,7 @@ class HomeController < ApplicationController
       @foods = @foods.order("foods.price DESC")
     when "name"
       @foods = @foods.order("foods.name ASC")
-    when "restaurant"
+    when "restaurante"
       @foods = @foods.joins(:user).order("users.email ASC")
     else
       @foods = @foods.order("foods.created_at DESC")

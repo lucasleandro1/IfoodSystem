@@ -16,31 +16,31 @@ RSpec.describe User, type: :model do
   end
 
   describe "enums" do
-    it { should define_enum_for(:role).with_values(client: 0, restaurant: 1) }
+    it { should define_enum_for(:role).with_values(cliente: 0, restaurante: 1) }
   end
 
   describe "default role" do
-    it "sets default role to client" do
+    it "sets default role to cliente" do
       user = User.new(email: "test@example.com", password: "password123")
-      expect(user.role).to eq("client")
+      expect(user.role).to eq("cliente")
     end
   end
 
   describe "role behaviors" do
-    let(:client) { create(:user, role: :client) }
-    let(:restaurant) { create(:user, role: :restaurant) }
-    let(:address) { create(:address, user: client) }
-    let(:order) { create(:order, user: client) }
-    let(:food) { create(:food, user: restaurant) }
+    let(:cliente) { create(:user, role: :cliente) }
+    let(:restaurante) { create(:user, role: :restaurante) }
+    let(:address) { create(:address, user: cliente) }
+    let(:order) { create(:order, user: cliente) }
+    let(:food) { create(:food, user: restaurante) }
 
     it "associates records correctly by role" do
-      expect(client.addresses).to include(address)
-      expect(client.orders).to include(order)
+      expect(cliente.addresses).to include(address)
+      expect(cliente.orders).to include(order)
     end
 
-    it "restaurant can have foods" do
-      food = create(:food, user: restaurant)
-      expect(restaurant.foods).to include(food)
+    it "restaurante can have foods" do
+      food = create(:food, user: restaurante)
+      expect(restaurante.foods).to include(food)
     end
   end
 end

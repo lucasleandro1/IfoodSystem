@@ -66,7 +66,7 @@
                     <i class="fas fa-map-marker-alt me-2"></i>Endereço de Coleta
                   <% end %>
                   <%= f.collection_select :pickup_address_id,
-                      @restaurant_addresses,
+                      @restaurante_addresses,
                       :id,
                       ->(a) { a.address_line },
                       { prompt: "Selecione um endereço de coleta" },
@@ -82,7 +82,7 @@
                     <i class="fas fa-home me-2"></i>Endereço de Entrega
                   <% end %>
                   <%= f.collection_select :delivery_address_id, 
-                      @client_addresses, 
+                      @cliente_addresses, 
                       :id,
                       ->(a) { a.address_line }, 
                       { prompt: "Selecione um endereço de entrega" }, 

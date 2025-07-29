@@ -5,10 +5,10 @@ FactoryBot.define do
     email { Faker::Internet.email }
     password { "password123" }
     password_confirmation { "password123" }
-    role { :client }
+    role { :cliente }
   end
 
-  factory :restaurant, parent: :user do
-    role { :restaurant }
+  factory :restaurante, parent: :user do
+    role { :restaurante }
   end
 end

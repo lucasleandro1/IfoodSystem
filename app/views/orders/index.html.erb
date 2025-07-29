@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>
           <i class="fas fa-clipboard-list me-2"></i>
-          <%= current_user.restaurant? ? "Pedidos Recebidos" : "Meus Pedidos" %>
+          <%= current_user.restaurante? ? "Pedidos Recebidos" : "Meus Pedidos" %>
         </h1>
       </div>
 
@@ -39,12 +39,12 @@
                 <%= f.date_field :date, value: params[:date], class: "form-control" %>
               </div>
 
-              <% if current_user.client? && @restaurants.present? %>
+              <% if current_user.cliente? && @restaurantes.present? %>
                 <div class="col-md-3">
-                  <%= f.label :restaurant_id, "Restaurante:", class: "form-label" %>
-                  <%= f.select :restaurant_id, 
-                      options_from_collection_for_select(@restaurants, :id, 
-                        lambda { |r| r.email.split('@').first.humanize }, params[:restaurant_id]),
+                  <%= f.label :restaurante_id, "restaurante:", class: "form-label" %>
+                  <%= f.select :restaurante_id, 
+                      options_from_collection_for_select(@restaurantes, :id, 
+                        lambda { |r| r.email.split('@').first.humanize }, params[:restaurante_id]),
                       { prompt: 'Todos os restaurantes' }, 
                       { class: "form-select" } %>
                 </div>
@@ -63,7 +63,7 @@
         <div class="alert alert-info">
           <i class="fas fa-info-circle me-2"></i>
           <strong><%= @orders.count %></strong> pedido(s) encontrado(s)
-          <% if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurant_id].present? %>
+          <% if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurante_id].present? %>
             com os filtros aplicados
           <% end %>
         </div>
@@ -94,15 +94,15 @@
                             <i class="fas fa-utensils text-muted me-2"></i>
                             <strong>Comida:</strong> <%= order.item_description %>
                           </p>
-                          <% if current_user.client? %>
+                          <% if current_user.cliente? %>
                             <p class="mb-1">
                               <i class="fas fa-store text-muted me-2"></i>
-                              <strong>Restaurante:</strong> <%= order.food.user.email.split('@').first.humanize %>
+                              <strong>restaurante:</strong> <%= order.food.user.email.split('@').first.humanize %>
                             </p>
                           <% else %>
                             <p class="mb-1">
                               <i class="fas fa-user text-muted me-2"></i>
-                              <strong>Cliente:</strong> <%= split_name(order.user.email) %>
+                              <strong>cliente:</strong> <%= split_name(order.user.email) %>
                             </p>
                           <% end %>
                         </div>
@@ -143,13 +143,13 @@
 
                     <div class="col-md-4">
                       <div class="d-flex flex-column gap-2">
-                      <% if current_user.client? %>
+                      <% if current_user.cliente? %>
                           <%= link_to order_path(order), class: "btn btn-outline-primary" do %>
                             <i class="fas fa-eye me-2"></i>Ver Detalhes
                           <% end %>
                         <% end %>
 
-                        <% if current_user.restaurant? %>
+                        <% if current_user.restaurante? %>
                           <%= form_with model: order, url: order_path(order), method: :patch, local: true do |f| %>
                             <div class="d-flex gap-2">
                               <%= f.select :status, Order.statuses.keys.map { |s| [s.humanize, s] }, 
@@ -160,7 +160,7 @@
                           <% end %>
                         <% end %>
 
-                        <% if current_user.client? && order.pendente? %>
+                        <% if current_user.cliente? && order.pendente? %>
                           <%= button_to order_path(order), 
                               method: :patch, 
                               params: { order: { status: 'cancelado' } }, 
@@ -184,15 +184,15 @@
           </div>
           <h3 class="text-muted mb-3">Nenhum pedido encontrado</h3>
           <p class="text-muted mb-4">
-            <%= if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurant_id].present?
+            <%= if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurante_id].present?
                   "Tente ajustar os filtros para encontrar pedidos."
-                elsif current_user.restaurant?
+                elsif current_user.restaurante?
                   "Ainda não há pedidos para suas comidas."
                 else
                   "Você ainda não fez nenhum pedido."
                 end %>
           </p>
-          <% unless current_user.restaurant? %>
+          <% unless current_user.restaurante? %>
             <%= link_to root_path, class: "btn btn-primary" do %>
               <i class="fas fa-utensils me-2"></i>Ver Comidas Disponíveis
             <% end %>

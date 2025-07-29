@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Food, type: :model do
-  include_context "with restaurant and food"
+  include_context "with restaurante and food"
 
   describe "associations" do
     it { should belong_to(:user) }
@@ -18,10 +18,10 @@ RSpec.describe Food, type: :model do
   end
 
   describe "valid food creation" do
-    it "creates with all required attributes and belongs to restaurant" do
+    it "creates with all required attributes and belongs to restaurante" do
       expect(food).to be_valid
-      expect(food.user).to eq(restaurant)
-      expect(food.user.restaurant?).to be true
+      expect(food.user).to eq(restaurante)
+      expect(food.user.restaurante?).to be true
       expect(food.name).to be_present
       expect(food.description).to be_present
       expect(food.price).to be > 0

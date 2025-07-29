@@ -19,8 +19,8 @@ module OrderManager
     private
 
     def authorized?
-      return true if @user.restaurant? && @order.food.user_id == @user.id
-      return true if @user.client? && @order.user_id == @user.id && @order.pendente?
+      return true if @user.restaurante? && @order.food.user_id == @user.id
+      return true if @user.cliente? && @order.user_id == @user.id && @order.pendente?
 
       false
     end

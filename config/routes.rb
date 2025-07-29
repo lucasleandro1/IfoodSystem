@@ -3,15 +3,15 @@ Rails.application.routes.draw do
 
   resources :orders do
     collection do
-      get :restaurant_index
+      get :restaurante_index
       get :user_orders
     end
   end
   resources :foods
   resources :addresses
-  resources :restaurants, only: [ :index, :show ]
-  namespace :restaurant do
-    resources :orders, only: [:index, :show, :new, :create, :edit, :update]
+  resources :restaurantes, only: [ :index, :show ]
+  namespace :restaurante do
+    resources :orders, only: [ :index, :show, :new, :create, :edit, :update ]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root to: "home#index"

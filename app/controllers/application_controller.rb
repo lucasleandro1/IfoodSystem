@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     stored_location_for(resource) ||
-      if resource.client?
+      if resource.cliente?
         root_path
       else
         root_path

@@ -2,7 +2,7 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @orders = if current_user.restaurant?
+    @orders = if current_user.restaurante?
                 Order.joins(:food).where(foods: { user_id: current_user.id }).includes(:pickup_address, :delivery_address, :user, food: :user)
     else
                 current_user.orders.includes(:pickup_address, :delivery_address, food: :user)
@@ -30,16 +30,16 @@ class OrdersController < ApplicationController
       end
     end
 
-    if current_user.client? && params[:restaurant_id].present?
-      @orders = @orders.joins(:food).where(foods: { user_id: params[:restaurant_id] })
+    if current_user.cliente? && params[:restaurante_id].present?
+      @orders = @orders.joins(:food).where(foods: { user_id: params[:restaurante_id] })
     end
 
     @orders = @orders.order(created_at: :desc)
 
-    if current_user.client?
-      @restaurants = User.joins(:foods, foods: :orders)
+    if current_user.cliente?
+      @restaurantes = User.joins(:foods, foods: :orders)
                         .where(orders: { user_id: current_user.id })
-                        .where(role: :restaurant)
+                        .where(role: :restaurante)
                         .distinct
                         .select(:id, :email)
     end
@@ -61,9 +61,9 @@ class OrdersController < ApplicationController
 
   def new
     @food = Food.find(params[:food_id])
-    @restaurant = @food.user
-    @restaurant_addresses = @restaurant.addresses
-    @client_addresses = current_user.addresses
+    @restaurante = @food.user
+    @restaurante_addresses = @restaurante.addresses
+    @cliente_addresses = current_user.addresses
     @order = Order.new
   end
 
@@ -77,16 +77,16 @@ class OrdersController < ApplicationController
         redirect_to @order, notice: "Pedido criado com sucesso."
       else
         @food = Food.find(params[:food_id])
-        @restaurant = @food.user
-        @restaurant_addresses = @restaurant.addresses
-        @client_addresses = current_user.addresses
+        @restaurante = @food.user
+        @restaurante_addresses = @restaurante.addresses
+        @cliente_addresses = current_user.addresses
         render :new, status: :unprocessable_entity
       end
     rescue ArgumentError => e
       @food = Food.find(params[:food_id])
-      @restaurant = @food.user
-      @restaurant_addresses = @restaurant.addresses
-      @client_addresses = current_user.addresses
+      @restaurante = @food.user
+      @restaurante_addresses = @restaurante.addresses
+      @cliente_addresses = current_user.addresses
       @order = Order.new(params[:order] || {})
       @order.errors.add(:base, e.message)
       render :new, status: :unprocessable_entity
@@ -96,7 +96,7 @@ class OrdersController < ApplicationController
   def edit
     @order = Order.find(params[:id])
 
-    unless current_user.restaurant? && @order.food.user_id == current_user.id
+    unless current_user.restaurante? && @order.food.user_id == current_user.id
       redirect_to orders_path, alert: "Você não tem permissão para editar este pedido."
     end
   end

@@ -6,29 +6,29 @@ RSpec.describe FoodManager::Creator do
   include_context "with valid service params"
   include_context "with invalid service params"
 
-  let(:restaurant) { create(:restaurant) }
+  let(:restaurante) { create(:restaurante) }
 
   describe "#call" do
     context "with valid parameters" do
-      subject { described_class.new(restaurant, valid_food_params) }
+      subject { described_class.new(restaurante, valid_food_params) }
       include_examples "creator service", Food, "Produto criado com sucesso."
 
-      it "associates food with the restaurant" do
+      it "associates food with the restaurante" do
         result = subject.call
-        expect(result[:resource].user).to eq(restaurant)
+        expect(result[:resource].user).to eq(restaurante)
       end
     end
 
     context "with invalid parameters" do
-      subject { described_class.new(restaurant, invalid_food_params) }
+      subject { described_class.new(restaurante, invalid_food_params) }
       include_examples "failed service operation", "can't be blank"
     end
 
     context "when an exception occurs" do
-      subject { described_class.new(restaurant, valid_food_params) }
+      subject { described_class.new(restaurante, valid_food_params) }
 
       before do
-        allow(restaurant.foods).to receive(:build).and_raise(StandardError, "Database error")
+        allow(restaurante.foods).to receive(:build).and_raise(StandardError, "Database error")
       end
 
       it "handles exceptions gracefully" do

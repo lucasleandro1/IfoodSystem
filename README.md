@@ -7,26 +7,26 @@ Sistema web de delivery de comida, inspirado no iFood. Desenvolvido em Ruby on R
 
 ## 📚 Visão Geral
 
-Este sistema permite que **restaurantes** cadastrem pratos e que **clientes** façam pedidos, selecionando endereço de entrega, método de pagamento e quantidade.
+Este sistema permite que **restaurantes** cadastrem pratos e que **clientees** façam pedidos, selecionando endereço de entrega, método de pagamento e quantidade.
 
 ---
 
 ## 🧠 Funcionalidades
 
 ### 👥 Usuários
-- Tipos de usuário: `client` e `restaurant`
+- Tipos de usuário: `cliente` e `restaurante`
 - Cada um pode ter **um endereço** cadastrado
 
 ### 📍 Endereços (`addresses`)
 - Campos: rua, número e bairro
-- Relacionados a usuários (client ou restaurant)
+- Relacionados a usuários (cliente ou restaurante)
 
 ### 🍽️ Pratos (`foods`)
 - Criados por restaurantes
 - Campos: nome, descrição, preço
 
 ### 🛒 Pedidos (`orders`)
-- Criados por clientes
+- Criados por clientees
 - Contêm:
   - Endereço de entrega
   - Endereço de coleta (restaurante)

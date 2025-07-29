@@ -64,17 +64,17 @@
                     </p>
                   </div>
 
-                  <% if current_user.restaurant? %>
+                  <% if current_user.restaurante? %>
                     <div class="mb-3">
-                      <label class="text-muted small">Cliente</label>
+                      <label class="text-muted small">cliente</label>
                       <p class="mb-0">
                         <i class="fas fa-user me-2 text-secondary"></i>
                         <%= split_name(@order.user.email) %>
                       </p>
                     </div>
-                  <% elsif current_user.client? %>
+                  <% elsif current_user.cliente? %>
                     <div class="mb-3">
-                      <label class="text-muted small">Restaurante</label>
+                      <label class="text-muted small">restaurante</label>
                       <p class="mb-0">
                         <i class="fas fa-store me-2 text-secondary"></i>
                         <%= @order.food.user.email.split('@').first.humanize %>
@@ -132,7 +132,7 @@
                   <i class="fas fa-arrow-left me-2"></i>Voltar aos Pedidos
                 <% end %>
 
-                <% if current_user.restaurant? %>
+                <% if current_user.restaurante? %>
                   <%= form_with model: @order, url: order_path(@order), method: :patch, local: true do |f| %>
                     <div class="mb-2">
                       <%= f.label :status, "Status do Pedido:", class: "form-label small" %>
@@ -144,7 +144,7 @@
                   <% end %>
                 <% end %>
 
-                <% if current_user.client? && @order.pendente? %>
+                <% if current_user.cliente? && @order.pendente? %>
                   <%= button_to order_path(@order), 
                       method: :patch, 
                       params: { order: { status: 'cancelado' } }, 

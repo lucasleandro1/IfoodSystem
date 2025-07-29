@@ -2,34 +2,34 @@
   <div class="row">
     <div class="col-12">
       <h1 class="mb-4">
-        <i class="fas fa-store me-2"></i>Restaurantes
+        <i class="fas fa-store me-2"></i>restaurantes
       </h1>
 
-      <% if @restaurants.any? %>
+      <% if @restaurantes.any? %>
         <div class="row">
-          <% @restaurants.each do |restaurant| %>
+          <% @restaurantes.each do |restaurante| %>
             <div class="col-md-6 col-lg-4 mb-4">
               <div class="card h-100">
                 <div class="card-body">
                   <h5 class="card-title text-primary">
                     <i class="fas fa-utensils me-2"></i>
-                    <%= link_to split_name(restaurant.email), restaurant_path(restaurant), 
+                    <%= link_to split_name(restaurante.email), restaurante_path(restaurante), 
                         class: "text-decoration-none" %>
                   </h5>
                   
-                  <% if restaurant.addresses.any? %>
+                  <% if restaurante.addresses.any? %>
                     <div class="mb-3">
                       <h6 class="text-muted small mb-2">
                         <i class="fas fa-map-marker-alt me-1"></i>Endereços:
                       </h6>
-                      <% restaurant.addresses.limit(2).each do |address| %>
+                      <% restaurante.addresses.limit(2).each do |address| %>
                         <p class="card-text text-muted small mb-1">
                           <%= address.address_line %>
                         </p>
                       <% end %>
-                      <% if restaurant.addresses.count > 2 %>
+                      <% if restaurante.addresses.count > 2 %>
                         <small class="text-muted">
-                          +<%= restaurant.addresses.count - 2 %> endereço(s) adicional(is)
+                          +<%= restaurante.addresses.count - 2 %> endereço(s) adicional(is)
                         </small>
                       <% end %>
                     </div>
@@ -40,7 +40,7 @@
                     </p>
                   <% end %>
 
-                  <% foods_count = restaurant.foods.count %>
+                  <% foods_count = restaurante.foods.count %>
                   <p class="card-text">
                     <span class="badge bg-primary">
                       <i class="fas fa-utensils me-1"></i>
@@ -49,7 +49,7 @@
                   </p>
                 </div>
                 <div class="card-footer bg-transparent">
-                  <%= link_to restaurant_path(restaurant), class: "btn btn-outline-primary w-100" do %>
+                  <%= link_to restaurante_path(restaurante), class: "btn btn-outline-primary w-100" do %>
                     <i class="fas fa-eye me-2"></i>Ver Detalhes
                   <% end %>
                 </div>

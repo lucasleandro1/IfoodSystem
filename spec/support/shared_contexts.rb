@@ -5,16 +5,16 @@ RSpec.shared_context "with user and address" do
   let(:address) { create(:address, user: user) }
 end
 
-RSpec.shared_context "with restaurant and food" do
-  let(:restaurant) { create(:restaurant) }
-  let(:food) { create(:food, user: restaurant) }
+RSpec.shared_context "with restaurante and food" do
+  let(:restaurante) { create(:restaurante) }
+  let(:food) { create(:food, user: restaurante) }
 end
 
 RSpec.shared_context "with complete order setup" do
   let(:user) { create(:user) }
-  let(:restaurant) { create(:restaurant) }
-  let(:food) { create(:food, user: restaurant) }
-  let(:pickup_address) { create(:address, user: restaurant) }
+  let(:restaurante) { create(:restaurante) }
+  let(:food) { create(:food, user: restaurante) }
+  let(:pickup_address) { create(:address, user: restaurante) }
   let(:delivery_address) { create(:address, user: user) }
   let(:order) { create(:order, user: user, food: food, pickup_address: pickup_address, delivery_address: delivery_address) }
 end

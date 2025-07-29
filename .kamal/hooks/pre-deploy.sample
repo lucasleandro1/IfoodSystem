@@ -40,17 +40,17 @@ def exit_with_error(message)
 end
 
 class GithubStatusChecks
-  attr_reader :remote_url, :git_sha, :github_client, :combined_status
+  attr_reader :remote_url, :git_sha, :github_cliente, :combined_status
 
   def initialize
     @remote_url = github_repo_from_remote_url
     @git_sha = `git rev-parse HEAD`.strip
-    @github_client = Octokit::Client.new(access_token: ENV["GITHUB_TOKEN"])
+    @github_cliente = Octokit.cliente.new(access_token: ENV["GITHUB_TOKEN"])
     refresh!
   end
 
   def refresh!
-    @combined_status = github_client.combined_status(remote_url, git_sha)
+    @combined_status = github_cliente.combined_status(remote_url, git_sha)
   end
 
   def state
@@ -63,7 +63,7 @@ class GithubStatusChecks
   end
 
   def complete_count
-    combined_status[:statuses].count { |status| status[:state] != "pending"}
+    combined_status[:statuses].count { |status| status[:state] != "pending" }
   end
 
   def total_count

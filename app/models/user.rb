@@ -4,12 +4,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  enum :role, { client: 0, restaurant: 1 }
+  enum :role, { cliente: 0, restaurante: 1 }
 
   after_initialize :set_default_role, if: :new_record?
 
   def set_default_role
-    self.role ||= :client
+    self.role ||= :cliente
   end
 
   has_many :addresses, dependent: :destroy

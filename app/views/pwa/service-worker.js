@@ -8,18 +8,18 @@
 // self.addEventListener("notificationclick", function(event) {
 //   event.notification.close()
 //   event.waitUntil(
-//     clients.matchAll({ type: "window" }).then((clientList) => {
-//       for (let i = 0; i < clientList.length; i++) {
-//         let client = clientList[i]
-//         let clientPath = (new URL(client.url)).pathname
+//     clientes.matchAll({ type: "window" }).then((clienteList) => {
+//       for (let i = 0; i < clienteList.length; i++) {
+//         let cliente = clienteList[i]
+//         let clientePath = (new URL(cliente.url)).pathname
 //
-//         if (clientPath == event.notification.data.path && "focus" in client) {
-//           return client.focus()
+//         if (clientePath == event.notification.data.path && "focus" in cliente) {
+//           return cliente.focus()
 //         }
 //       }
 //
-//       if (clients.openWindow) {
-//         return clients.openWindow(event.notification.data.path)
+//       if (clientes.openWindow) {
+//         return clientes.openWindow(event.notification.data.path)
 //       }
 //     })
 //   )

@@ -1,10 +1,10 @@
 class FoodsController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_restaurant, only: %i[new create edit update destroy]
+  before_action :require_restaurante, only: %i[new create edit update destroy]
   before_action :set_food, only: %i[show edit update destroy]
 
   def index
-    @foods = current_user.client? ? Food.all : current_user.foods
+    @foods = current_user.cliente? ? Food.all : current_user.foods
   end
 
   def new
@@ -56,8 +56,8 @@ class FoodsController < ApplicationController
     redirect_to foods_path, alert: "Produto não encontrado."
   end
 
-  def require_restaurant
-    redirect_to root_path, alert: "Acesso restrito." unless current_user.restaurant?
+  def require_restaurante
+    redirect_to root_path, alert: "Acesso restrito." unless current_user.restaurante?
   end
 
   def food_params

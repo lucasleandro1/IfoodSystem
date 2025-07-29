@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe OrderManager::Updater do
-  let(:client) { create(:user, role: :client) }
-  let(:restaurant) { create(:restaurant) }
-  let(:food) { create(:food, user: restaurant) }
-  let(:order) { create(:order, user: client, food: food, status: :pendente) }
+  let(:cliente) { create(:user, role: :cliente) }
+  let(:restaurante) { create(:restaurante) }
+  let(:food) { create(:food, user: restaurante) }
+  let(:order) { create(:order, user: cliente, food: food, status: :pendente) }
 
   describe "#call" do
-    context "client updates" do
-      subject { described_class.new(user: client, order: order, status_param: 'cancelado') }
+    context "cliente updates" do
+      subject { described_class.new(user: cliente, order: order, status_param: 'cancelado') }
 
       it "allows cancellation of pending order" do
         expect(subject.call).to be true
@@ -24,10 +24,10 @@ RSpec.describe OrderManager::Updater do
       end
     end
 
-    context "restaurant updates" do
+    context "restaurante updates" do
       %w[preparando em_rota entregue cancelado].each do |status|
         it "allows #{status} status update" do
-          updater = described_class.new(user: restaurant, order: order, status_param: status)
+          updater = described_class.new(user: restaurante, order: order, status_param: status)
           expect(updater.call).to be true
           expect(order.reload.status).to eq(status)
         end

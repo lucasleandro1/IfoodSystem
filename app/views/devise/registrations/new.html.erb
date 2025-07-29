@@ -39,20 +39,20 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-check">
-                  <%= f.radio_button :role, "client", class: "form-check-input", 
-                                     checked: resource.role == "client" %>
-                  <%= f.label :role_client, class: "form-check-label" do %>
-                    <strong>Cliente</strong><br>
+                  <%= f.radio_button :role, "cliente", class: "form-check-input", 
+                                     checked: resource.role == "cliente" %>
+                  <%= f.label :role_cliente, class: "form-check-label" do %>
+                    <strong>cliente</strong><br>
                     <small class="text-muted">Quero pedir comida</small>
                   <% end %>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-check">
-                  <%= f.radio_button :role, "restaurant", class: "form-check-input", 
-                                     checked: resource.role == "restaurant" %>
-                  <%= f.label :role_restaurant, class: "form-check-label" do %>
-                    <strong>Restaurante</strong><br>
+                  <%= f.radio_button :role, "restaurante", class: "form-check-input", 
+                                     checked: resource.role == "restaurante" %>
+                  <%= f.label :role_restaurante, class: "form-check-label" do %>
+                    <strong>restaurante</strong><br>
                     <small class="text-muted">Quero vender comida</small>
                   <% end %>
                 </div>
