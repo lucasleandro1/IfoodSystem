@@ -1,48 +1,31 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe FoodManager::Creator do
+  include_context "with valid service params"
+  include_context "with invalid service params"
+
   let(:restaurant) { create(:restaurant) }
-  let(:valid_params) { { name: 'Pizza Margherita', description: 'Delicious pizza', price: 25.50 } }
-  let(:invalid_params) { { name: '', description: '', price: nil } }
 
   describe "#call" do
     context "with valid parameters" do
-      subject { described_class.new(restaurant, valid_params) }
-
-      it "creates a new food" do
-        expect { subject.call }.to change { Food.count }.by(1)
-      end
-
-      it "returns success result" do
-        result = subject.call
-        expect(result[:success]).to be true
-        expect(result[:message]).to eq("Produto criado com sucesso.")
-        expect(result[:resource]).to be_a(Food)
-      end
+      subject { described_class.new(restaurant, valid_food_params) }
+      include_examples "creator service", Food, "Produto criado com sucesso."
 
       it "associates food with the restaurant" do
         result = subject.call
-        food = result[:resource]
-        expect(food.user).to eq(restaurant)
+        expect(result[:resource].user).to eq(restaurant)
       end
     end
 
     context "with invalid parameters" do
-      subject { described_class.new(restaurant, invalid_params) }
-
-      it "does not create a food" do
-        expect { subject.call }.not_to change { Food.count }
-      end
-
-      it "returns error result" do
-        result = subject.call
-        expect(result[:success]).to be false
-        expect(result[:error_message]).to include("can't be blank")
-      end
+      subject { described_class.new(restaurant, invalid_food_params) }
+      include_examples "failed service operation", "can't be blank"
     end
 
     context "when an exception occurs" do
-      subject { described_class.new(restaurant, valid_params) }
+      subject { described_class.new(restaurant, valid_food_params) }
 
       before do
         allow(restaurant.foods).to receive(:build).and_raise(StandardError, "Database error")
