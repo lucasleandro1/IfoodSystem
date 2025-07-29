@@ -4,14 +4,14 @@ class OrdersController < ApplicationController
   def index
     @orders = if current_user.restaurant?
                 Order.joins(:food).where(foods: { user_id: current_user.id }).includes(:pickup_address, :delivery_address, :user, food: :user)
-              else
+    else
                 current_user.orders.includes(:pickup_address, :delivery_address, food: :user)
-              end
+    end
 
     if params[:status].present?
       @orders = @orders.where(status: params[:status])
-    elsif current_user.restaurant?
-      @orders = @orders.where.not(status: :entregue)
+    else
+      @orders = @orders.where.not(status: [ "entregue", "cancelado" ])
     end
 
     if params[:date].present?
@@ -21,11 +21,11 @@ class OrdersController < ApplicationController
 
     if params[:period].present?
       case params[:period]
-      when 'today'
+      when "today"
         @orders = @orders.where(requested_at: Date.current.beginning_of_day..Date.current.end_of_day)
-      when 'week'
+      when "week"
         @orders = @orders.where(requested_at: 1.week.ago.beginning_of_day..Time.current)
-      when 'month'
+      when "month"
         @orders = @orders.where(requested_at: 1.month.ago.beginning_of_day..Time.current)
       end
     end
@@ -33,6 +33,8 @@ class OrdersController < ApplicationController
     if current_user.client? && params[:restaurant_id].present?
       @orders = @orders.joins(:food).where(foods: { user_id: params[:restaurant_id] })
     end
+
+    @orders = @orders.order(created_at: :desc)
 
     if current_user.client?
       @restaurants = User.joins(:foods, foods: :orders)
@@ -47,7 +49,7 @@ class OrdersController < ApplicationController
     if params[:user_id].present? && (current_user.id == params[:user_id].to_i)
       user = User.find(params[:user_id])
       @orders = user.orders.includes(:pickup_address, :delivery_address, :food)
-      render json: @orders.as_json(include: [:pickup_address, :delivery_address, :food])
+      render json: @orders.as_json(include: [ :pickup_address, :delivery_address, :food ])
     else
       render json: { error: "Não autorizado" }, status: :unauthorized
     end
@@ -67,7 +69,7 @@ class OrdersController < ApplicationController
 
   def create
     service = OrderManager::Creator.new(user: current_user, food_id: params[:food_id], order_params: params[:order])
-    
+
     begin
       @order = service.call
 
