@@ -24,18 +24,6 @@ SimpleCov.start 'rails' do
   # Configuração de cobertura mínima
   minimum_coverage 90
 
-  # Formatadores para mostrar relatório detalhado
-  if ENV['CI'] || ENV['GITHUB_ACTIONS']
-    # No CI, usar formatador simples para logs limpos
-    formatter SimpleCov::Formatter::SimpleFormatter
-  else
-    # Localmente, mostrar relatório HTML detalhado
-    formatter SimpleCov::Formatter::MultiFormatter.new([
-      SimpleCov::Formatter::SimpleFormatter,
-      SimpleCov::Formatter::HTMLFormatter
-    ])
-  end
-
   SimpleCov.at_exit do
     SimpleCov.result.format!
     exit(1) if SimpleCov.result.covered_percent < 90
