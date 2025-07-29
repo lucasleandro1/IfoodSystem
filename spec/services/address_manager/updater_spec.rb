@@ -1,92 +1,113 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe AddressManager::Updater do
+  subject(:updater) { described_class.new(user, address, params) }
+
   let(:user) { create(:user) }
   let(:address) { create(:address, user: user) }
-  let(:valid_params) do
-    {
-      street: 'Nova Rua',
-      number: '456',
-      neighborhood: 'Novo Bairro'
-    }
-  end
-  let(:invalid_params) do
-    {
-      street: '',
-      number: '',
-      neighborhood: ''
-    }
-  end
 
   describe "#call" do
-    context "with valid parameters" do
-      it "updates the address" do
-        updater = AddressManager::Updater.new(user, address, valid_params)
-        result = updater.call
-
-        address.reload
-        expect(address.street).to eq('Nova Rua')
-        expect(address.number).to eq('456')
-        expect(address.neighborhood).to eq('Novo Bairro')
-      end
-
-      it "returns success result" do
-        updater = AddressManager::Updater.new(user, address, valid_params)
-        result = updater.call
-
-        expect(result[:success]).to be true
-        expect(result[:message]).to be_present
-        expect(result[:resource]).to eq(address)
-      end
-    end
-
-    context "with invalid parameters" do
-      it "does not update the address" do
-        original_street = address.street
-        updater = AddressManager::Updater.new(user, address, invalid_params)
-        result = updater.call
-
-        address.reload
-        expect(address.street).to eq(original_street)
-      end
-
-      it "returns error result" do
-        updater = AddressManager::Updater.new(user, address, invalid_params)
-        result = updater.call
-
-        expect(result[:success]).to be false
-        expect(result[:error_message]).to be_present
-      end
-    end
-
-    context "when trying to create duplicate address" do
-      let!(:existing_address) { create(:address, user: user, street: 'Rua Existente', number: '789', neighborhood: 'Bairro Existente') }
-      let(:duplicate_params) do
+    context "when parameters are valid" do
+      let(:params) do
         {
-          street: 'Rua Existente',
-          number: '789',
-          neighborhood: 'Bairro Existente'
+          street: 'Nova Rua',
+          number: '456',
+          neighborhood: 'Novo Bairro'
         }
       end
 
-      it "updates address even if it creates duplicate (no validation for duplicates in updater)" do
-        updater = AddressManager::Updater.new(user, address, duplicate_params)
+      it "updates the address attributes" do
+        expect { updater.call }
+          .to change { address.reload.street }.to('Nova Rua')
+          .and change { address.number }.to('456')
+          .and change { address.neighborhood }.to('Novo Bairro')
+      end
+
+      it "returns a successful" do
         result = updater.call
 
-        # O updater atual não valida duplicatas, então deve ser bem-sucedido
-        expect(result[:success]).to be true
+        expect(result).to include(
+          success: true,
+          message: "Endereço atualizado com sucesso.",
+          resource: address
+        )
       end
     end
 
-    context "when an exception occurs" do
-      it "handles exceptions gracefully" do
-        allow(address).to receive(:update).and_raise(StandardError, "Database error")
-        
-        updater = AddressManager::Updater.new(user, address, valid_params)
+    context "when parameters are invalid" do
+      let(:params) do
+        {
+          street: '',
+          number: '',
+          neighborhood: ''
+        }
+      end
+
+      it "does not update the address" do
+        original_attributes = address.attributes.slice('street', 'number', 'neighborhood')
+
+        updater.call
+
+        expect(address.reload.attributes.slice('street', 'number', 'neighborhood'))
+          .to eq(original_attributes)
+      end
+
+      it "returns an error result with validation messages" do
         result = updater.call
 
-        expect(result[:success]).to be false
-        expect(result[:error_message]).to eq("Database error")
+        expect(result).to include(
+          success: false,
+          error_message: a_string_including("can't be blank")
+        )
+      end
+    end
+
+    context "when allowing duplicate addresses" do
+      let!(:existing_address) do
+        create(:address,
+               user: user,
+               street: 'Rua Duplicada',
+               number: '123',
+               neighborhood: 'Bairro Duplicado')
+      end
+
+      let(:params) do
+        {
+          street: existing_address.street,
+          number: existing_address.number,
+          neighborhood: existing_address.neighborhood
+        }
+      end
+
+      it "successfully updates to duplicate values" do
+        result = updater.call
+
+        expect(result[:success]).to be true
+        expect(address.reload).to have_attributes(
+          street: existing_address.street,
+          number: existing_address.number,
+          neighborhood: existing_address.neighborhood
+        )
+      end
+    end
+
+    context "when an unexpected error occurs" do
+      let(:params) { { street: 'Test Street' } }
+      let(:error_message) { "Unexpected database error" }
+
+      before do
+        allow(address).to receive(:update).and_raise(StandardError, error_message)
+      end
+
+      it "handles the exception gracefully" do
+        result = updater.call
+
+        expect(result).to include(
+          success: false,
+          error_message: error_message
+        )
       end
     end
   end

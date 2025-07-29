@@ -1,15 +1,38 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Food, type: :model do
-  it "é válido com nome, preço e descrição" do
-    restaurant = User.create!(email: "pizza@top.com", password: "123456", role: :restaurant)
-    food = Food.new(name: "Pizza Calabresa", description: "Pizza com calabresa", price: 39.90, user: restaurant)
-    expect(food).to be_valid
+  include_context "with restaurant and food"
+
+  describe "associations" do
+    it { should belong_to(:user) }
+    it { should have_many(:orders).dependent(:destroy) }
   end
 
-  it "não é válido sem preço" do
-    restaurant = User.create!(email: "pizza@top.com", password: "123456", role: :restaurant)
-    food = Food.new(name: "Pizza Calabresa", description: "Pizza com calabresa", user: restaurant)
-    expect(food).not_to be_valid
+  describe "validations" do
+    it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:description) }
+    it { should validate_presence_of(:price) }
+    it { should validate_numericality_of(:price).is_greater_than(0) }
+  end
+
+  describe "valid food creation" do
+    it "creates with all required attributes and belongs to restaurant" do
+      expect(food).to be_valid
+      expect(food.user).to eq(restaurant)
+      expect(food.user.restaurant?).to be true
+      expect(food.name).to be_present
+      expect(food.description).to be_present
+      expect(food.price).to be > 0
+    end
+  end
+
+  describe "dependent destroy relationship" do
+    let!(:orders) { create_list(:order, 2, food: food) }
+
+    it "destroys associated orders when food is destroyed" do
+      expect { food.destroy }.to change { Order.count }.by(-2)
+    end
   end
 end

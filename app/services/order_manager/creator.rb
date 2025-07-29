@@ -8,7 +8,7 @@ module OrderManager
 
     def call
       validate_params!
-      
+
       quantity = @params[:quantity].to_i
       order = @user.orders.new(
         food_id: @food.id,
@@ -29,12 +29,12 @@ module OrderManager
 
     def validate_params!
       errors = []
-      
+
       errors << "Endereço de coleta é obrigatório" if @params[:pickup_address_id].blank?
       errors << "Endereço de entrega é obrigatório" if @params[:delivery_address_id].blank?
       errors << "Método de pagamento é obrigatório" if @params[:payment_method].blank?
       errors << "Quantidade deve ser maior que zero" if @params[:quantity].to_i <= 0
-      
+
       raise ArgumentError, errors.join(", ") if errors.any?
     end
   end
