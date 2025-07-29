@@ -100,7 +100,7 @@
                       <i class="fas fa-store me-2"></i>Coleta
                     </h6>
                     <p class="mb-0 small">
-                      <%= @order.pickup_address.address_line %>
+                      <%= "#{@order.pickup_address.street}, #{@order.pickup_address.number} - #{@order.pickup_address.neighborhood}" %>
                     </p>
                   </div>
                 </div>
@@ -110,7 +110,7 @@
                       <i class="fas fa-home me-2"></i>Entrega
                     </h6>
                     <p class="mb-0 small">
-                      <%= @order.delivery_address.address_line %>
+                      <%= "#{@order.delivery_address.street}, #{@order.delivery_address.number} - #{@order.delivery_address.neighborhood}" %>
                     </p>
                   </div>
                 </div>

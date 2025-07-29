@@ -35,7 +35,7 @@
                 </h6>
                 <% @restaurante.addresses.each do |address| %>
                   <p class="text-muted small mb-1">
-                    <%= address.address_line %>
+                    <%= "#{address.street}, #{address.number} - #{address.neighborhood}" %>
                   </p>
                 <% end %>
               <% else %>

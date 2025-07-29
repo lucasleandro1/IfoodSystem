@@ -137,14 +137,14 @@
                           <p class="mb-1 text-muted small">
                             <i class="fas fa-map-marker-alt me-1"></i>
                             <strong>Coleta:</strong><br>
-                            <%= order.pickup_address.address_line %>
+                            <%= "#{order.pickup_address.street}, #{order.pickup_address.number} - #{order.pickup_address.neighborhood}" %>
                           </p>
                         </div>
                         <div class="col-md-6">
                           <p class="mb-1 text-muted small">
                             <i class="fas fa-home me-1"></i>
                             <strong>Entrega:</strong><br>
-                            <%= order.delivery_address.address_line %>
+                            <%= "#{order.delivery_address.street}, #{order.delivery_address.number} - #{order.delivery_address.neighborhood}" %>
                           </p>
                         </div>
                       </div>

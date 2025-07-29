@@ -14,7 +14,7 @@
           </li>
           <% if current_user.cliente? %>
             <li class="nav-item">
-              <%= link_to "restaurantes", restaurantes_path, class: "nav-link" %>
+              <%= link_to "Restaurantes", restaurantes_path, class: "nav-link" %>
             </li>
             <li class="nav-item">
               <%= link_to "Pedidos", orders_path, class: "nav-link" %>
@@ -28,7 +28,7 @@
           </li>
           <li class="nav-item">
             <%= button_to "Logout", destroy_user_session_path, method: :delete, 
-                          class: "btn btn-outline-light btn-sm ms-2" %>
+                          class: "nav-link" %>
           </li>
         <% else %>
           <li class="nav-item">

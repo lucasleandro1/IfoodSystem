@@ -68,7 +68,7 @@
                   <%= f.collection_select :pickup_address_id,
                       @restaurante_addresses,
                       :id,
-                      ->(a) { a.address_line },
+                      ->(a) { "#{a.street}, #{a.number} - #{a.neighborhood}" },
                       { prompt: "Selecione um endereço de coleta" },
                       { required: true, class: "form-select" } %>
                   <div class="invalid-feedback">
@@ -84,7 +84,7 @@
                   <%= f.collection_select :delivery_address_id, 
                       @cliente_addresses, 
                       :id,
-                      ->(a) { a.address_line }, 
+                      ->(a) { "#{a.street}, #{a.number} - #{a.neighborhood}" }, 
                       { prompt: "Selecione um endereço de entrega" }, 
                       { required: true, class: "form-select" } %>
                   <div class="invalid-feedback">
