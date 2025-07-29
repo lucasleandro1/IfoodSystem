@@ -1,13 +1,61 @@
-<h1>Meus Endereços</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>
+          <i class="fas fa-map-marker-alt me-2"></i>Meus Endereços
+        </h1>
+        <%= link_to new_address_path, class: "btn btn-primary" do %>
+          <i class="fas fa-plus me-2"></i>Novo Endereço
+        <% end %>
+      </div>
 
-<%= link_to "Novo Endereço", new_address_path %>
-
-<ul>
-  <% @addresses.each do |address| %>
-    <li>
-      <strong><%= address.street %></strong>, <%= address.number %>, <%= address.neighborhood %>
-      <%= link_to 'Editar', edit_address_path(address), class: 'button button--primary' %>
-      <%= button_to 'Excluir', address_path(address), method: :delete, data: { confirm: 'Tem certeza?' }, class: 'button button--danger' %>
-    </li>
-  <% end %>
-</ul>
+      <% if @addresses.any? %>
+        <div class="row">
+          <% @addresses.each do |address| %>
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title text-primary">
+                    <i class="fas fa-home me-2"></i>
+                    <%= address.street %>, <%= address.number %>
+                  </h5>
+                  <p class="card-text text-muted">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    <%= address.neighborhood %>
+                  </p>
+                </div>
+                <div class="card-footer bg-transparent">
+                  <div class="d-flex gap-2">
+                    <%= link_to edit_address_path(address), class: "btn btn-outline-primary btn-sm" do %>
+                      <i class="fas fa-edit me-1"></i>Editar
+                    <% end %>
+                    <%= button_to address_path(address), 
+                        method: :delete, 
+                        data: { confirm: 'Tem certeza que deseja excluir este endereço?' },
+                        class: "btn btn-outline-danger btn-sm" do %>
+                      <i class="fas fa-trash me-1"></i>Excluir
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <div class="mb-4">
+            <i class="fas fa-map-marker-alt fa-4x text-muted"></i>
+          </div>
+          <h3 class="text-muted mb-3">Nenhum endereço cadastrado</h3>
+          <p class="text-muted mb-4">
+            Você ainda não possui endereços cadastrados. Adicione um endereço para facilitar seus pedidos.
+          </p>
+          <%= link_to new_address_path, class: "btn btn-primary" do %>
+            <i class="fas fa-plus me-2"></i>Cadastrar Primeiro Endereço
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
