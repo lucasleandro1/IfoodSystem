@@ -1,0 +1,33 @@
+pt_br:
+  activerecord:
+    models:
+      user: "Usuário"
+      address: "Endereço"
+      food: "Comida"
+      order: "Pedido"
+      
+    attributes:
+      user:
+        email: "E-mail"
+        password: "Senha"
+        password_confirmation: "Confirmação da senha"
+        name: "Nome"
+        
+      address:
+        street: "Rua"
+        number: "Número"
+        neighborhood: "Bairro"
+        city: "Cidade"
+        state: "Estado"
+        zip_code: "CEP"
+        
+      food:
+        name: "Nome"
+        description: "Descrição"
+        price: "Preço"
+        category: "Categoria"
+        
+      order:
+        status: "Status"
+        total: "Total"
+        created_at: "Criado em"

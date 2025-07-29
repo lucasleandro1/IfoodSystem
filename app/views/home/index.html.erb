@@ -1,13 +1,13 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <h1 class="mb-4">Comidas</h1>
+      <h1 class="mb-4"><%= t('views.home.index.title') %></h1>
 
             <% if current_user %>
         <div class="alert alert-info d-flex align-items-center">
           <i class="fas fa-user-circle me-2"></i>
           <div>
-            <strong>Olá, <%= split_name(current_user.email) %>!</strong>
+            <strong><%= t('views.home.index.hello_user', name: split_name(current_user.email)) %></strong>
             <span class="badge bg-secondary ms-2"><%= current_user.role.humanize %></span>
           </div>
         </div>
@@ -15,8 +15,8 @@
         <div class="alert alert-warning d-flex align-items-center">
           <i class="fas fa-user-circle me-2"></i>
           <div>
-            <strong>Olá, visitante!</strong>
-            <span class="badge bg-secondary ms-2">Faça login para fazer pedidos</span>
+            <strong><%= t('views.home.index.hello_visitor') %></strong>
+            <span class="badge bg-secondary ms-2"><%= t('views.home.index.login_to_order') %></span>
           </div>
         </div>
       <% end %>
@@ -27,20 +27,20 @@
             <div class="col-md-6">
               <%= form.select :sort_by, 
                              options_for_select([
-                               ['Mais recentes', ''],
-                               ['Menor preço', 'price_asc'],
-                               ['Maior preço', 'price_desc'],
-                               ['Nome A-Z', 'name'],
-                               ['restaurante A-Z', 'restaurante']
+                               [t('views.home.index.sort_by.newest'), ''],
+                               [t('views.home.index.sort_by.price_asc'), 'price_asc'],
+                               [t('views.home.index.sort_by.price_desc'), 'price_desc'],
+                               [t('views.home.index.sort_by.name'), 'name'],
+                               [t('views.home.index.sort_by.restaurant'), 'restaurante']
                              ], params[:sort_by]), 
-                             { prompt: "Ordenar por..." }, 
+                             { prompt: t('views.home.index.sort_by.label') }, 
                              { class: "form-select" } %>
             </div>
             <div class="col-md-3">
-              <%= form.submit "Aplicar", class: "btn btn-primary" %>
+              <%= form.submit t('views.home.index.apply'), class: "btn btn-primary" %>
             </div>
             <div class="col-md-3">
-              <%= link_to "Limpar", root_path, class: "btn btn-outline-secondary" %>
+              <%= link_to t('views.home.index.clear'), root_path, class: "btn btn-outline-secondary" %>
             </div>
           <% end %>
         </div>
@@ -74,7 +74,7 @@
                     <% elsif !current_user %>
                       <%= link_to new_user_session_path, 
                                  class: "btn btn-outline-primary btn-sm" do %>
-                        <i class="fas fa-sign-in-alt me-1"></i>Entrar
+                        <i class="fas fa-sign-in-alt me-1"></i><%= t('views.home.index.login') %>
                       <% end %>
                     <% end %>
                   </div>
@@ -83,11 +83,10 @@
             </div>
           <% end %>
         </div>
-        
-        <!-- Pagination -->
+
         <div class="d-flex flex-column align-items-center mt-4">
           <div class="pagination-info mb-3">
-            Página <%= @foods.current_page %> de <%= @foods.total_pages %> - Total: <%= @foods.total_count %> comidas
+            <%= t('views.home.index.pagination_info', current: @foods.current_page, total: @foods.total_pages, count: @foods.total_count) %>
           </div>
           <%= paginate @foods %>
         </div>
@@ -96,17 +95,17 @@
           <div class="mb-4">
             <i class="fas fa-utensils fa-4x text-muted"></i>
           </div>
-          <h3 class="text-muted mb-3">Nenhuma comida encontrada</h3>
+          <h3 class="text-muted mb-3"><%= t('views.home.index.no_foods') %></h3>
           <p class="text-muted mb-4">
-            Ainda não há comidas cadastradas no sistema.
+            <%= t('views.home.index.no_foods_description') %>
           </p>
           <div class="d-flex flex-column flex-md-row gap-2 justify-content-center">
             <% if !current_user %>
               <%= link_to new_user_registration_path, class: "btn btn-success me-2" do %>
-                <i class="fas fa-user-plus me-2"></i>Cadastrar como restaurante
+                <i class="fas fa-user-plus me-2"></i><%= t('views.home.index.register_restaurant') %>
               <% end %>
               <%= link_to restaurantes_path, class: "btn btn-outline-primary" do %>
-                <i class="fas fa-store me-2"></i>Ver restaurantes
+                <i class="fas fa-store me-2"></i><%= t('views.home.index.view_restaurants') %>
               <% end %>
             <% end %>
           </div>

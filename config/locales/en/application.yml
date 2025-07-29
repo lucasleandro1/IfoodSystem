@@ -1,0 +1,35 @@
+en:
+  hello: "Hello world"
+  
+  # Application specific translations
+  app:
+    name: "iFood System"
+    welcome: "Welcome to iFood System"
+    
+  # Common UI elements
+  ui:
+    buttons:
+      save: "Save"
+      cancel: "Cancel"
+      edit: "Edit"
+      delete: "Delete"
+      new: "New"
+      back: "Back"
+      submit: "Submit"
+      add: "Add"
+    messages:
+      success: "Operation completed successfully"
+      error: "An error occurred"
+      confirm: "Are you sure?"
+      
+  # Pagination
+  views:
+    shared:
+      incomplete_profile:
+        add_address: "Add an address to get started"
+    pagination:
+      first: "&laquo; First"
+      last: "Last &raquo;"
+      previous: "&lsaquo; Previous"
+      next: "Next &rsaquo;"
+      truncate: "&hellip;"

@@ -1,0 +1,35 @@
+pt_br:
+  hello: "Olá mundo"
+  
+  # Traduções específicas da aplicação
+  app:
+    name: "Sistema iFood"
+    welcome: "Bem-vindo ao Sistema iFood"
+    
+  # Elementos comuns da interface
+  ui:
+    buttons:
+      save: "Salvar"
+      cancel: "Cancelar"
+      edit: "Editar"
+      delete: "Excluir"
+      new: "Novo"
+      back: "Voltar"
+      submit: "Enviar"
+      add: "Adicionar"
+    messages:
+      success: "Operação realizada com sucesso"
+      error: "Ocorreu um erro"
+      confirm: "Tem certeza?"
+      
+  # Paginação
+  views:
+    shared:
+      incomplete_profile:
+        add_address: "Adicione um endereço para começar"
+    pagination:
+      first: "&laquo; Primeiro"
+      last: "Último &raquo;"
+      previous: "&lsaquo; Anterior"
+      next: "Próximo &rsaquo;"
+      truncate: "&hellip;"

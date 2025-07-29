@@ -4,13 +4,13 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>
           <i class="fas fa-clipboard-list me-2"></i>
-          <%= current_user.restaurante? ? "Pedidos Recebidos" : "Meus Pedidos" %>
+          <%= current_user.restaurante? ? t('views.orders.index.title_restaurant') : t('views.orders.index.title_client') %>
         </h1>
         <% if current_user %>
           <div class="alert alert-info d-flex align-items-center">
             <i class="fas fa-user-circle me-2"></i>
             <div>
-              <strong>Olá, <%= split_name(current_user.email) %>!</strong>
+              <strong><%= t('views.orders.index.hello_user', name: split_name(current_user.email)) %></strong>
               <span class="badge bg-secondary ms-2"><%= current_user.role.humanize %></span>
             </div>
           </div>
@@ -22,46 +22,46 @@
           <%= form_with url: orders_path, method: :get, local: true do |f| %>
             <div class="row g-3">
               <div class="col-md-2">
-                <%= f.label :status, "Status:", class: "form-label" %>
+                <%= f.label :status, t('views.orders.index.status_label'), class: "form-label" %>
                 <%= f.select :status, options_for_select([
-                  ['Todos', ''],
-                  ['Pendente', 'pendente'],
-                  ['Preparando', 'preparando'],
-                  ['Em Rota', 'em_rota'],
-                  ['Entregue', 'entregue'],
-                  ['Cancelado', 'cancelado']
+                  [t('views.orders.index.filters.all'), ''],
+                  [t('views.orders.index.filters.pending'), 'pendente'],
+                  [t('views.orders.index.filters.preparing'), 'preparando'],
+                  [t('views.orders.index.filters.in_route'), 'em_rota'],
+                  [t('views.orders.index.filters.delivered'), 'entregue'],
+                  [t('views.orders.index.filters.cancelled'), 'cancelado']
                 ], params[:status]), {}, { class: "form-select" } %>
               </div>
 
               <div class="col-md-2">
-                <%= f.label :period, "Período:", class: "form-label" %>
+                <%= f.label :period, t('views.orders.index.period_label'), class: "form-label" %>
                 <%= f.select :period, options_for_select([
-                  ['Todos', ''],
-                  ['Hoje', 'today'],
-                  ['Última semana', 'week'],
-                  ['Último mês', 'month']
+                  [t('views.orders.index.filters.all'), ''],
+                  [t('views.orders.index.filters.today'), 'today'],
+                  [t('views.orders.index.filters.week'), 'week'],
+                  [t('views.orders.index.filters.month'), 'month']
                 ], params[:period]), {}, { class: "form-select" } %>
               </div>
 
               <div class="col-md-2">
-                <%= f.label :date, "Data específica:", class: "form-label" %>
+                <%= f.label :date, t('views.orders.index.date_label'), class: "form-label" %>
                 <%= f.date_field :date, value: params[:date], class: "form-control" %>
               </div>
 
               <% if current_user.cliente? && @restaurantes.present? %>
                 <div class="col-md-3">
-                  <%= f.label :restaurante_id, "restaurante:", class: "form-label" %>
+                  <%= f.label :restaurante_id, t('views.orders.index.restaurant_label'), class: "form-label" %>
                   <%= f.select :restaurante_id, 
                       options_from_collection_for_select(@restaurantes, :id, 
                         lambda { |r| r.email.split('@').first.humanize }, params[:restaurante_id]),
-                      { prompt: 'Todos os restaurantes' }, 
+                      { prompt: t('views.orders.index.filters.all_restaurants') }, 
                       { class: "form-select" } %>
                 </div>
               <% end %>
 
               <div class="col-md-3 d-flex gap-2 align-items-end">
-                <%= f.submit "Filtrar", class: "btn btn-primary" %>
-                <%= link_to "Limpar", orders_path, class: "btn btn-outline-secondary" %>
+                <%= f.submit t('views.orders.index.filter'), class: "btn btn-primary" %>
+                <%= link_to t('views.orders.index.clear'), orders_path, class: "btn btn-outline-secondary" %>
               </div>
             </div>
           <% end %>
@@ -71,9 +71,9 @@
       <% if @orders.any? %>
         <div class="alert alert-info">
           <i class="fas fa-info-circle me-2"></i>
-          <strong><%= @orders.total_count %></strong> pedido(s) encontrado(s)
+          <strong><%= t('views.orders.index.orders_found', count: @orders.total_count) %></strong>
           <% if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurante_id].present? %>
-            com os filtros aplicados
+            <%= t('views.orders.index.with_filters') %>
           <% end %>
         </div>
 
@@ -86,7 +86,7 @@
                     <div class="col-md-8">
                       <div class="d-flex justify-content-between align-items-start mb-3">
                         <h5 class="card-title text-primary mb-0">
-                          Pedido #<%= order.id %>
+                          <%= t('views.orders.index.order_number', id: order.id) %>
                         </h5>
                         <span class="badge bg-<%= status_badge_class(order.status) %> fs-6">
                           <%= order.status&.humanize || "Indefinido" %>
@@ -97,37 +97,37 @@
                         <div class="col-md-6">
                           <p class="mb-1">
                             <i class="fas fa-clock text-muted me-2"></i>
-                            <strong>Data/Hora:</strong> <%= order.requested_at.strftime("%d/%m/%Y às %H:%M") %>
+                            <strong><%= t('views.orders.index.datetime') %></strong> <%= order.requested_at.strftime("%d/%m/%Y às %H:%M") %>
                           </p>
                           <p class="mb-1">
                             <i class="fas fa-utensils text-muted me-2"></i>
-                            <strong>Comida:</strong> <%= order.item_description %>
+                            <strong><%= t('views.orders.index.food') %></strong> <%= order.item_description %>
                           </p>
                           <% if current_user.cliente? %>
                             <p class="mb-1">
                               <i class="fas fa-store text-muted me-2"></i>
-                              <strong>restaurante:</strong> <%= order.food.user.email.split('@').first.humanize %>
+                              <strong><%= t('views.orders.index.restaurant') %></strong> <%= order.food.user.email.split('@').first.humanize %>
                             </p>
                           <% else %>
                             <p class="mb-1">
                               <i class="fas fa-user text-muted me-2"></i>
-                              <strong>cliente:</strong> <%= split_name(order.user.email) %>
+                              <strong><%= t('views.orders.index.client') %></strong> <%= split_name(order.user.email) %>
                             </p>
                           <% end %>
                         </div>
                         <div class="col-md-6">
                           <p class="mb-1">
                             <i class="fas fa-sort-numeric-up text-muted me-2"></i>
-                            <strong>Quantidade:</strong> <%= order.quantity %>
+                            <strong><%= t('views.orders.index.quantity') %></strong> <%= order.quantity %>
                           </p>
                           <p class="mb-1">
                             <i class="fas fa-dollar-sign text-muted me-2"></i>
-                            <strong>Valor:</strong> 
+                            <strong><%= t('views.orders.index.value') %></strong> 
                             <span class="price-tag">R$ <%= number_to_currency(order.estimated_value, unit: "", precision: 2) %></span>
                           </p>
                           <p class="mb-1">
                             <i class="fas fa-credit-card text-muted me-2"></i>
-                            <strong>Pagamento:</strong> <%= order.payment_method&.humanize || "N/A" %>
+                            <strong><%= t('views.orders.index.payment') %></strong> <%= order.payment_method&.humanize || "N/A" %>
                           </p>
                         </div>
                       </div>
@@ -136,14 +136,14 @@
                         <div class="col-md-6">
                           <p class="mb-1 text-muted small">
                             <i class="fas fa-map-marker-alt me-1"></i>
-                            <strong>Coleta:</strong><br>
+                            <strong><%= t('views.orders.index.pickup') %></strong><br>
                             <%= "#{order.pickup_address.street}, #{order.pickup_address.number} - #{order.pickup_address.neighborhood}" %>
                           </p>
                         </div>
                         <div class="col-md-6">
                           <p class="mb-1 text-muted small">
                             <i class="fas fa-home me-1"></i>
-                            <strong>Entrega:</strong><br>
+                            <strong><%= t('views.orders.index.delivery') %></strong><br>
                             <%= "#{order.delivery_address.street}, #{order.delivery_address.number} - #{order.delivery_address.neighborhood}" %>
                           </p>
                         </div>
@@ -154,7 +154,7 @@
                       <div class="d-flex flex-column gap-2">
                       <% if current_user.cliente? %>
                           <%= link_to order_path(order), class: "btn btn-outline-primary" do %>
-                            <i class="fas fa-eye me-2"></i>Ver Detalhes
+                            <i class="fas fa-eye me-2"></i><%= t('views.orders.index.view_details') %>
                           <% end %>
                         <% end %>
 
@@ -164,7 +164,7 @@
                               <%= f.select :status, Order.statuses.keys.map { |s| [s.humanize, s] }, 
                                   { selected: order.status }, 
                                   { class: "form-select form-select-sm" } %>
-                              <%= f.submit "Atualizar", class: "btn btn-sm btn-success" %>
+                              <%= f.submit t('views.orders.index.update'), class: "btn btn-sm btn-success" %>
                             </div>
                           <% end %>
                         <% end %>
@@ -173,9 +173,9 @@
                           <%= button_to order_path(order), 
                               method: :patch, 
                               params: { order: { status: 'cancelado' } }, 
-                              data: { confirm: 'Tem certeza que deseja cancelar o pedido?' },
+                              data: { confirm: t('views.orders.index.cancel_confirm') },
                               class: "btn btn-sm btn-danger" do %>
-                            <i class="fas fa-times me-2"></i>Cancelar Pedido
+                            <i class="fas fa-times me-2"></i><%= t('views.orders.index.cancel_order') %>
                           <% end %>
                         <% end %>
                       </div>
@@ -190,7 +190,7 @@
         <!-- Pagination -->
         <div class="d-flex flex-column align-items-center mt-4">
           <div class="pagination-info mb-3">
-            Página <%= @orders.current_page %> de <%= @orders.total_pages %> - Total: <%= @orders.total_count %> pedidos
+            <%= t('views.orders.index.pagination_info', current: @orders.current_page, total: @orders.total_pages, count: @orders.total_count) %>
           </div>
           <%= paginate @orders %>
         </div>
@@ -199,19 +199,19 @@
           <div class="mb-4">
             <i class="fas fa-clipboard-list fa-4x text-muted"></i>
           </div>
-          <h3 class="text-muted mb-3">Nenhum pedido encontrado</h3>
+          <h3 class="text-muted mb-3"><%= t('views.orders.index.no_orders') %></h3>
           <p class="text-muted mb-4">
             <%= if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurante_id].present?
-                  "Tente ajustar os filtros para encontrar pedidos."
+                  t('views.orders.index.no_orders_with_filters')
                 elsif current_user.restaurante?
-                  "Ainda não há pedidos para suas comidas."
+                  t('views.orders.index.no_orders_restaurant')
                 else
-                  "Você ainda não fez nenhum pedido."
+                  t('views.orders.index.no_orders_client')
                 end %>
           </p>
           <% unless current_user.restaurante? %>
             <%= link_to root_path, class: "btn btn-primary" do %>
-              <i class="fas fa-utensils me-2"></i>Ver Comidas Disponíveis
+              <i class="fas fa-utensils me-2"></i><%= t('views.orders.index.view_foods') %>
             <% end %>
           <% end %>
         </div>

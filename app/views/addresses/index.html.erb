@@ -3,10 +3,10 @@
     <div class="col-12">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>
-          <i class="fas fa-map-marker-alt me-2"></i>Meus Endereços
+          <i class="fas fa-map-marker-alt me-2"></i><%= t('views.addresses.index.title') %>
         </h1>
         <%= link_to new_address_path, class: "btn btn-primary" do %>
-          <i class="fas fa-plus me-2"></i>Novo Endereço
+          <i class="fas fa-plus me-2"></i><%= t('views.addresses.index.new_address') %>
         <% end %>
       </div>
 
@@ -28,13 +28,13 @@
                 <div class="card-footer bg-transparent">
                   <div class="d-flex gap-2">
                     <%= link_to edit_address_path(address), class: "btn btn-outline-primary btn-sm" do %>
-                      <i class="fas fa-edit me-1"></i>Editar
+                      <i class="fas fa-edit me-1"></i><%= t('views.addresses.index.edit') %>
                     <% end %>
                     <%= button_to address_path(address), 
                         method: :delete, 
-                        data: { confirm: 'Tem certeza que deseja excluir este endereço?' },
+                        data: { confirm: t('views.addresses.index.delete_confirm') },
                         class: "btn btn-outline-danger btn-sm" do %>
-                      <i class="fas fa-trash me-1"></i>Excluir
+                      <i class="fas fa-trash me-1"></i><%= t('views.addresses.index.delete') %>
                     <% end %>
                   </div>
                 </div>
@@ -47,12 +47,12 @@
           <div class="mb-4">
             <i class="fas fa-map-marker-alt fa-4x text-muted"></i>
           </div>
-          <h3 class="text-muted mb-3">Nenhum endereço cadastrado</h3>
+          <h3 class="text-muted mb-3"><%= t('views.addresses.index.no_addresses') %></h3>
           <p class="text-muted mb-4">
-            Você ainda não possui endereços cadastrados. Adicione um endereço para facilitar seus pedidos.
+            <%= t('views.addresses.index.no_addresses_description') %>
           </p>
           <%= link_to new_address_path, class: "btn btn-primary" do %>
-            <i class="fas fa-plus me-2"></i>Cadastrar Primeiro Endereço
+            <i class="fas fa-plus me-2"></i><%= t('views.addresses.index.register_first_address') %>
           <% end %>
         </div>
       <% end %>

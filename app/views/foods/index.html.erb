@@ -2,10 +2,10 @@
   <div class="row">
     <div class="col-12">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1><%= current_user.restaurante? ? "Minhas Comidas" : "Todas as Comidas" %></h1>
+        <h1><%= current_user.restaurante? ? t('views.foods.index.title_restaurant') : t('views.foods.index.title_client') %></h1>
         <% if current_user.restaurante? %>
           <%= link_to new_food_path, class: "btn btn-success" do %>
-            <i class="fas fa-plus me-2"></i>Nova Comida
+            <i class="fas fa-plus me-2"></i><%= t('views.foods.index.new_food') %>
           <% end %>
         <% end %>
       </div>
@@ -33,20 +33,21 @@
                       </span>
                       <div class="btn-group" role="group">
                         <% if current_user.restaurante? %>
-                          <%= link_to edit_food_path(food), class: "btn btn-outline-warning btn-sm me-1" do %>
+                          <%= link_to edit_food_path(food), class: "btn btn-outline-warning btn-sm me-1", title: t('views.foods.index.edit') do %>
                             <i class="fas fa-edit"></i>
                           <% end %>
                           <%= button_to food_path(food), method: :delete, 
                                        class: "btn btn-outline-danger btn-sm", 
-                                       data: { confirm: "Tem certeza que deseja excluir?" },
-                                       form: { style: "display: inline-block;" } do %>
+                                       data: { confirm: t('views.foods.index.delete_confirm') },
+                                       form: { style: "display: inline-block;" },
+                                       title: t('views.foods.index.delete') do %>
                             <i class="fas fa-trash"></i>
                           <% end %>
                         <% else %>
-                          <%= link_to food_path(food), class: "btn btn-outline-info btn-sm me-1" do %>
+                          <%= link_to food_path(food), class: "btn btn-outline-info btn-sm me-1", title: t('views.foods.index.view') do %>
                             <i class="fas fa-eye"></i>
                           <% end %>
-                          <%= link_to new_order_path(food_id: food.id), class: "btn btn-success btn-sm" do %>
+                          <%= link_to new_order_path(food_id: food.id), class: "btn btn-success btn-sm", title: t('views.foods.index.order') do %>
                             <i class="fas fa-shopping-cart"></i>
                           <% end %>
                         <% end %>
@@ -61,7 +62,7 @@
           <!-- Pagination -->
           <div class="d-flex flex-column align-items-center mt-4">
             <div class="pagination-info mb-3">
-              Página <%= @foods.current_page %> de <%= @foods.total_pages %> - Total: <%= @foods.total_count %> comidas
+              <%= t('views.foods.index.pagination_info', current: @foods.current_page, total: @foods.total_pages, count: @foods.total_count) %>
             </div>
             <%= paginate @foods %>
           </div>
@@ -71,21 +72,21 @@
               <i class="fas fa-utensils fa-4x text-muted"></i>
             </div>
             <h3 class="text-muted mb-3">
-              <%= current_user.restaurante? ? "Nenhuma comida cadastrada" : "Nenhuma comida disponível" %>
+              <%= current_user.restaurante? ? t('views.foods.index.no_foods_restaurant') : t('views.foods.index.no_foods_client') %>
             </h3>
             <p class="text-muted mb-4">
-              <%= current_user.restaurante? ? "Cadastre sua primeira comida para começar a vender." : "Nenhum restaurante cadastrou comidas ainda." %>
+              <%= current_user.restaurante? ? t('views.foods.index.no_foods_description_restaurant') : t('views.foods.index.no_foods_description_client') %>
             </p>
             <% if current_user.restaurante? %>
               <%= link_to new_food_path, class: "btn btn-primary" do %>
-                <i class="fas fa-plus me-2"></i>Cadastrar primeira comida
+                <i class="fas fa-plus me-2"></i><%= t('views.foods.index.register_first_food') %>
               <% end %>
             <% end %>
           </div>
         <% end %>
       <% else %>
         <div class="text-center py-5">
-          <h3 class="text-muted">Faça login para ver as comidas disponíveis</h3>
+          <h3 class="text-muted"><%= t('views.foods.index.login_to_view') %></h3>
         </div>
       <% end %>
     </div>

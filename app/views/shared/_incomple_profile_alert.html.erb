@@ -2,8 +2,8 @@
 <% if current_user.present? && current_user.addresses.empty? %>
   <div role="alert" class="alert alert-vertical alert-warning alert-soft sm:alert-horizontal mb-8">
     <p class="text-sm text-balance">
-      Adicione um endereço para começar
-      <%= link_to 'Adicionar', new_address_path, class: "btn btn-warning btn-outline btn-xs ms-2" %>
+      <%= t('views.shared.incomplete_profile.add_address') %>
+      <%= link_to t('ui.buttons.add'), new_address_path, class: "btn btn-warning btn-outline btn-xs ms-2" %>
     </p>
   </div>
 <% end %>

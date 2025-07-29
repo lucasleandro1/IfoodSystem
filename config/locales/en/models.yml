@@ -1,0 +1,33 @@
+en:
+  activerecord:
+    models:
+      user: "User"
+      address: "Address"
+      food: "Food"
+      order: "Order"
+      
+    attributes:
+      user:
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+        name: "Name"
+        
+      address:
+        street: "Street"
+        number: "Number"
+        neighborhood: "Neighborhood"
+        city: "City"
+        state: "State"
+        zip_code: "ZIP Code"
+        
+      food:
+        name: "Name"
+        description: "Description"
+        price: "Price"
+        category: "Category"
+        
+      order:
+        status: "Status"
+        total: "Total"
+        created_at: "Created at"
