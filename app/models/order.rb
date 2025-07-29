@@ -10,5 +10,4 @@ class Order < ApplicationRecord
   validates :payment_method, presence: true
   validates :estimated_value, numericality: { greater_than: 0 }
   validates :pickup_address, :delivery_address, :user, presence: true
-
 end
