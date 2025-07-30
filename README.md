@@ -1,13 +1,13 @@
 # README
 # 🍽️ Ifood System
 
-Sistema web de delivery de comida, inspirado no iFood. Desenvolvido em Ruby on Rails com PostgreSQL, utilizando Docker para facilitar o ambiente de desenvolvimento.
+Sistema web de delivery de comida, inspirado no iFood. Desenvolvido em Ruby on Rails, utilizando Docker para facilitar o ambiente de desenvolvimento.
 
 ---
 
 ## 📚 Visão Geral
 
-Este sistema permite que **restaurantes** cadastrem pratos e que **clientees** façam pedidos, selecionando endereço de entrega, método de pagamento e quantidade.
+Este sistema permite que **restaurantes** cadastrem pratos e que **clientes** façam pedidos, selecionando endereço de entrega, método de pagamento e quantidade.
 
 ---
 
@@ -15,7 +15,7 @@ Este sistema permite que **restaurantes** cadastrem pratos e que **clientees** f
 
 ### 👥 Usuários
 - Tipos de usuário: `cliente` e `restaurante`
-- Cada um pode ter **um endereço** cadastrado
+- Cada um pode ter **endereços** cadastrado
 
 ### 📍 Endereços (`addresses`)
 - Campos: rua, número e bairro
@@ -26,9 +26,9 @@ Este sistema permite que **restaurantes** cadastrem pratos e que **clientees** f
 - Campos: nome, descrição, preço
 
 ### 🛒 Pedidos (`orders`)
-- Criados por clientees
+- Criados por clientes
 - Contêm:
-  - Endereço de entrega
+  - Endereço de entrega(cliente)
   - Endereço de coleta (restaurante)
   - Método de pagamento
   - Quantidade e preço total
@@ -69,28 +69,7 @@ Para rodar os testes:
 ## 🛠️ Tecnologias Utilizadas
 
 - Ruby on Rails
-- PostgreSQL
 - Docker + Docker Compose
-- RSpec
+- RSpec (testes)
 - Devise (para autenticação)
-
----
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- Kaminari (para paginação)
