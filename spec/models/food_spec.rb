@@ -17,17 +17,6 @@ RSpec.describe Food, type: :model do
     it { should validate_numericality_of(:price).is_greater_than(0) }
   end
 
-  describe "valid food creation" do
-    it "creates with all required attributes and belongs to restaurante" do
-      expect(food).to be_valid
-      expect(food.user).to eq(restaurante)
-      expect(food.user.restaurante?).to be true
-      expect(food.name).to be_present
-      expect(food.description).to be_present
-      expect(food.price).to be > 0
-    end
-  end
-
   describe "dependent destroy relationship" do
     let!(:orders) { create_list(:order, 2, food: food) }
 

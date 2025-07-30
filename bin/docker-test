@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Script para executar testes no ambiente Docker
+# Uso: ./bin/docker-test [caminho_para_spec]
+
+set -e
+
+# Preparar o banco de teste se necessário
+echo "Preparando ambiente de teste..."
+docker compose exec web bash -c "RAILS_ENV=test bin/rails db:create db:schema:load" > /dev/null 2>&1 || true
+
+# Executar os testes
+echo "Executando testes..."
+if [ $# -eq 0 ]; then
+    # Se nenhum argumento for passado, executa todos os testes
+    docker compose exec web bash -c "DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=test bundle exec rspec"
+else
+    # Se um argumento for passado, executa o teste específico
+    docker compose exec web bash -c "DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=test bundle exec rspec $1"
+fi

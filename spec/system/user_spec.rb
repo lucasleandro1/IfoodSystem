@@ -9,8 +9,8 @@ RSpec.describe "User Authentication", type: :system do
         visit new_user_registration_path
 
         fill_in "user_email", with: "user@example.com"
-        fill_in "user_password", with: "password123"
-        fill_in "user_password_confirmation", with: "password123"
+        fill_in "user_password", with: "123456"
+        fill_in "user_password_confirmation", with: "123456"
 
         click_button "Criar Conta"
 

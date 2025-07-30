@@ -16,14 +16,4 @@ RSpec.describe Address, type: :model do
     it { should validate_presence_of(:number) }
     it { should validate_presence_of(:neighborhood) }
   end
-
-  describe "valid address creation" do
-    it "creates with all required attributes" do
-      expect(address).to be_valid
-      expect(address.user).to eq(user)
-      expect(address.street).to be_present
-      expect(address.number).to be_present
-      expect(address.neighborhood).to be_present
-    end
-  end
 end

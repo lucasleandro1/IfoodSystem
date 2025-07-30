@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :address do
-    street { Faker::Address.street_name }
-    number { Faker::Address.building_number }
-    neighborhood { Faker::Address.community }
+    street { "Rua 25 de Março" }
+    number { "1020" }
+    neighborhood { "Centro" }
     user
   end
 end

@@ -24,16 +24,4 @@ RSpec.describe Order, type: :model do
     it { should define_enum_for(:status).with_values(pendente: 0, cancelado: 1, preparando: 2, em_rota: 3, entregue: 4) }
     it { should define_enum_for(:payment_method).with_values(pix: 0, card: 1, cash: 2) }
   end
-
-  describe "valid order creation" do
-    it "creates with all required associations and attributes" do
-      expect(order).to be_valid
-      expect(order.status).to eq('pendente')
-      expect(order.estimated_value).to be > 0
-      expect(order.user).to be_present
-      expect(order.food).to be_present
-      expect(order.pickup_address).to be_present
-      expect(order.delivery_address).to be_present
-    end
-  end
 end

@@ -7,7 +7,7 @@ FactoryBot.define do
     association :pickup_address, factory: :address
     association :delivery_address, factory: :address
     payment_method { :pix }
-    estimated_value { Faker::Number.decimal(l_digits: 2, r_digits: 2) }
+    estimated_value { 25.50 }
     status { :pendente }
     requested_at { Time.current }
     quantity { 1 }
