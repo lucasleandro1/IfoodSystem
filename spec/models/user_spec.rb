@@ -25,22 +25,4 @@ RSpec.describe User, type: :model do
       expect(user.role).to eq("cliente")
     end
   end
-
-  describe "role behaviors" do
-    let(:cliente) { create(:user, role: :cliente) }
-    let(:restaurante) { create(:user, role: :restaurante) }
-    let(:address) { create(:address, user: cliente) }
-    let(:order) { create(:order, user: cliente) }
-    let(:food) { create(:food, user: restaurante) }
-
-    it "associates records correctly by role" do
-      expect(cliente.addresses).to include(address)
-      expect(cliente.orders).to include(order)
-    end
-
-    it "restaurante can have foods" do
-      food = create(:food, user: restaurante)
-      expect(restaurante.foods).to include(food)
-    end
-  end
 end

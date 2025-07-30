@@ -11,11 +11,7 @@ RSpec.describe AddressManager::Updater do
   describe "#call" do
     context "when parameters are valid" do
       let(:params) do
-        {
-          street: 'Nova Rua',
-          number: '456',
-          neighborhood: 'Novo Bairro'
-        }
+        { street: 'Nova Rua', number: '456', neighborhood: 'Novo Bairro' }
       end
 
       it "updates the address attributes" do
@@ -28,21 +24,13 @@ RSpec.describe AddressManager::Updater do
       it "returns a successful" do
         result = updater.call
 
-        expect(result).to include(
-          success: true,
-          message: "Endereço atualizado com sucesso.",
-          resource: address
-        )
+        expect(result).to include(success: true, message: "Endereço atualizado com sucesso.", resource: address)
       end
     end
 
     context "when parameters are invalid" do
       let(:params) do
-        {
-          street: '',
-          number: '',
-          neighborhood: ''
-        }
+        { street: '', number: '', neighborhood: '' }
       end
 
       it "does not update the address" do
@@ -57,28 +45,17 @@ RSpec.describe AddressManager::Updater do
       it "returns an error result with validation messages" do
         result = updater.call
 
-        expect(result).to include(
-          success: false,
-          error_message: a_string_including("can't be blank")
-        )
+        expect(result).to include(success: false, error_message: a_string_including("can't be blank"))
       end
     end
 
     context "when allowing duplicate addresses" do
       let!(:existing_address) do
-        create(:address,
-               user: user,
-               street: 'Rua Duplicada',
-               number: '123',
-               neighborhood: 'Bairro Duplicado')
+        create(:address, user: user, street: 'Rua Duplicada', number: '123', neighborhood: 'Bairro Duplicado')
       end
 
       let(:params) do
-        {
-          street: existing_address.street,
-          number: existing_address.number,
-          neighborhood: existing_address.neighborhood
-        }
+        { street: existing_address.street, number: existing_address.number, neighborhood: existing_address.neighborhood }
       end
 
       it "successfully updates to duplicate values" do
@@ -104,10 +81,7 @@ RSpec.describe AddressManager::Updater do
       it "handles the exception gracefully" do
         result = updater.call
 
-        expect(result).to include(
-          success: false,
-          error_message: error_message
-        )
+        expect(result).to include(success: false, error_message: error_message)
       end
     end
   end
