@@ -21,43 +21,24 @@ end
 
 RSpec.shared_context "with valid service params" do
   let(:valid_address_params) do
-    {
-      street: 'Rua das Flores',
-      number: '123',
-      neighborhood: 'Centro'
-    }
+    { street: 'Rua das Flores', number: '123', neighborhood: 'Centro' }
   end
 
   let(:valid_food_params) do
-    {
-      name: 'Pizza Margherita',
-      description: 'Delicious pizza',
-      price: 25.50
-    }
+    { name: 'Pizza Margherita', description: 'Delicious pizza', price: 25.50 }
   end
 
   let(:valid_order_params) do
-    {
-      payment_method: 'pix',
-      estimated_value: 25.50
-    }
+    { payment_method: 'pix', estimated_value: 25.50 }
   end
 end
 
 RSpec.shared_context "with invalid service params" do
   let(:invalid_address_params) do
-    {
-      street: '',
-      number: '',
-      neighborhood: ''
-    }
+    { street: '', number: '', neighborhood: '' }
   end
 
   let(:invalid_food_params) do
-    {
-      name: '',
-      description: '',
-      price: nil
-    }
+    { name: '', description: '', price: nil }
   end
 end

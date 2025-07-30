@@ -88,7 +88,7 @@ class OrdersController < ApplicationController
       @restaurante = @food.user
       @restaurante_addresses = @restaurante.addresses
       @cliente_addresses = current_user.addresses
-      @order = Order.new(params[:order] || {})
+      @order = Order.new
       @order.errors.add(:base, e.message)
       render :new, status: :unprocessable_entity
     end

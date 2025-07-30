@@ -15,7 +15,8 @@ class AddressesController < ApplicationController
     if result[:success]
       redirect_to edit_user_registration_path, notice: result[:message]
     else
-      flash[:alert] = result[:error_message]
+      @address = current_user.addresses.new(address_params)
+      flash.now[:alert] = result[:error_message]
       render :new
     end
   end
@@ -32,7 +33,7 @@ class AddressesController < ApplicationController
     if result[:success]
       redirect_to edit_user_registration_path, notice: result[:message]
     else
-      flash[:alert] = result[:error_message]
+      flash.now[:alert] = result[:error_message]
       render :edit
     end
   end
