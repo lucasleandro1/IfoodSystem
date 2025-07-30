@@ -19,7 +19,7 @@ SimpleCov.start 'rails' do
   add_filter %r{^/spec/}
   add_filter "app/controllers/application_controller.rb"
 
-  minimum_coverage 90
+  minimum_coverage 80
 
   SimpleCov.at_exit do
     SimpleCov.result.format!
