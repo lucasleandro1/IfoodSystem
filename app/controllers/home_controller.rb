@@ -7,6 +7,19 @@ class HomeController < ApplicationController
 
     @foods = Food.joins(:user).includes(:user)
 
+    # Lista de restaurantes que têm comidas cadastradas
+    @restaurants = User.joins(:foods)
+                      .where(role: "restaurante")
+                      .distinct
+                      .order(:email)
+                      .pluck(:id, :email)
+                      .map { |id, email| [ email.split("@").first.humanize, id ] }
+
+    # Filtro de busca por restaurante
+    if params[:search_restaurant].present?
+      @foods = @foods.where(user_id: params[:search_restaurant])
+    end
+
     case params[:sort_by]
     when "price_asc"
       @foods = @foods.order("foods.price ASC")

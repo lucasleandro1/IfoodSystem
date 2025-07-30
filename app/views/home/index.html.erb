@@ -23,8 +23,14 @@
 
       <div class="card mb-4">
         <div class="card-body">
-          <%= form_with url: root_path, method: :get, local: true, class: "row g-3" do |form| %>
-            <div class="col-md-6">
+          <%= form_with url: root_path, method: :get, local: true, class: "d-flex flex-wrap gap-3 align-items-end" do |form| %>
+            <div class="flex-grow-1" style="min-width: 200px;">
+              <%= form.select :search_restaurant, 
+                             options_for_select(@restaurants, params[:search_restaurant]),
+                             { prompt: "Selecionar restaurante..." }, 
+                             { class: "form-select" } %>
+            </div>
+            <div class="flex-grow-1" style="min-width: 200px;">
               <%= form.select :sort_by, 
                              options_for_select([
                                [t('views.home.index.sort_by.newest'), ''],
@@ -36,10 +42,10 @@
                              { prompt: t('views.home.index.sort_by.label') }, 
                              { class: "form-select" } %>
             </div>
-            <div class="col-md-3">
+            <div>
               <%= form.submit t('views.home.index.apply'), class: "btn btn-primary" %>
             </div>
-            <div class="col-md-3">
+            <div>
               <%= link_to t('views.home.index.clear'), root_path, class: "btn btn-outline-secondary" %>
             </div>
           <% end %>
