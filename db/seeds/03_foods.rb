@@ -11,7 +11,6 @@ restaurante6 = User.find_by!(email: "kfc@gmail.com")
 restaurante7 = User.find_by!(email: "bobs@gmail.com")
 restaurante8 = User.find_by!(email: "dominos@gmail.com")
 
-# Pizza Hut
 Food.create!(
   name: "Pizza Suprema",
   description: "Pizza com pepperoni, linguiça, pimentão, cebola e azeitona",
@@ -40,7 +39,6 @@ Food.create!(
   user_id: restaurante1.id
 )
 
-# Burger King
 Food.create!(
   name: "Whopper",
   description: "O clássico Whopper com carne grelhada, alface, tomate e maionese",
@@ -69,7 +67,6 @@ Food.create!(
   user_id: restaurante2.id
 )
 
-# Habib's
 Food.create!(
   name: "Esfiha de Carne",
   description: "Esfiha tradicional com carne temperada e especiarias árabes",
@@ -98,7 +95,6 @@ Food.create!(
   user_id: restaurante3.id
 )
 
-# McDonald's
 Food.create!(
   name: "Big Mac",
   description: "Dois hambúrgueres, alface, queijo, molho especial, cebola e pepino",
@@ -127,7 +123,6 @@ Food.create!(
   user_id: restaurante4.id
 )
 
-# Subway
 Food.create!(
   name: "Subway Italiano BMT",
   description: "Sanduíche com pepperoni, salame, presunto, queijo e vegetais",
@@ -156,7 +151,6 @@ Food.create!(
   user_id: restaurante5.id
 )
 
-# KFC
 Food.create!(
   name: "Balde de Frango 8 Pedaços",
   description: "8 pedaços de frango crocante com tempero secreto do Coronel",
@@ -185,7 +179,6 @@ Food.create!(
   user_id: restaurante6.id
 )
 
-# Bob's
 Food.create!(
   name: "Big Bob",
   description: "Hambúrguer duplo com queijo, alface, tomate e molho especial",
@@ -214,7 +207,6 @@ Food.create!(
   user_id: restaurante7.id
 )
 
-# Domino's Pizza
 Food.create!(
   name: "Pizza Pepperoni Tradicional",
   description: "Pizza com generosa cobertura de pepperoni e queijo mussarela",

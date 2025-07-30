@@ -34,8 +34,6 @@ hot_wings = Food.find_by!(name: "Hot Wings 6 Unidades")
 big_bob = Food.find_by!(name: "Big Bob")
 pizza_pepperoni = Food.find_by!(name: "Pizza Pepperoni Tradicional")
 
-# Pedidos variados com diferentes status e datas
-# Pedidos recentes (hoje)
 Order.create!(
   user_id: cliente1.id,
   food_id: pizza_margherita.id,
@@ -101,7 +99,6 @@ Order.create!(
   status: :pendente
 )
 
-# Pedidos de ontem
 Order.create!(
   user_id: cliente1.id,
   food_id: balde_frango.id,
@@ -141,7 +138,6 @@ Order.create!(
   status: :entregue
 )
 
-# Pedidos de 2 dias atrás
 Order.create!(
   user_id: cliente3.id,
   food_id: pizza_suprema.id,
@@ -168,7 +164,6 @@ Order.create!(
   status: :entregue
 )
 
-# Pedidos de 3 dias atrás
 Order.create!(
   user_id: cliente5.id,
   food_id: quarter_pounder.id,
@@ -195,7 +190,6 @@ Order.create!(
   status: :entregue
 )
 
-# Pedidos de uma semana atrás
 frango_teriyaki = Food.find_by!(name: "Frango Teriyaki")
 combo_bobs = Food.find_by!(name: "Combo Bob's Clássico")
 lava_cake = Food.find_by!(name: "Lava Cake Chocolate")
@@ -239,7 +233,6 @@ Order.create!(
   status: :entregue
 )
 
-# Pedido cancelado
 kibe = Food.find_by!(name: "Kibe")
 
 Order.create!(

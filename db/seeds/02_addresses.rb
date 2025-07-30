@@ -2,7 +2,6 @@
 
 Rails.logger.debug "2. Creating Addresses..."
 
-# Endereços dos clientes
 cliente1 = User.find_by!(email: "lucas@cliente.com")
 cliente2 = User.find_by!(email: "maria@cliente.com")
 cliente3 = User.find_by!(email: "joao@cliente.com")
@@ -10,7 +9,6 @@ cliente4 = User.find_by!(email: "ana@cliente.com")
 cliente5 = User.find_by!(email: "pedro@cliente.com")
 cliente6 = User.find_by!(email: "carla@cliente.com")
 
-# Endereços dos restaurantes
 restaurante1 = User.find_by!(email: "pizzahut@gmail.com")
 restaurante2 = User.find_by!(email: "burgerking@gmail.com")
 restaurante3 = User.find_by!(email: "habibs@gmail.com")
@@ -20,7 +18,6 @@ restaurante6 = User.find_by!(email: "kfc@gmail.com")
 restaurante7 = User.find_by!(email: "bobs@gmail.com")
 restaurante8 = User.find_by!(email: "dominos@gmail.com")
 
-# Criando endereços para clientes
 Address.create!(
   street: "Rua das Flores", number: "123", neighborhood: "Centro", user_id: cliente1.id
 )
@@ -49,7 +46,6 @@ Address.create!(
   street: "Av. Rebouças", number: "2200", neighborhood: "Pinheiros", user_id: cliente6.id
 )
 
-# Criando endereços para restaurantes
 Address.create!(
   street: "Av. Paulista", number: "1578", neighborhood: "Bela Vista", user_id: restaurante1.id
 )

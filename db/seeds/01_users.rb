@@ -2,13 +2,11 @@
 
 Rails.logger.debug "1. Creating Users..."
 
-# Limpar dados existentes em ordem correta
 Order.destroy_all
 Food.destroy_all
 Address.destroy_all
 User.destroy_all
 
-# Clientes
 @cliente1 = User.create!(
   email: "lucas@cliente.com",
   password: "123456",
@@ -51,7 +49,6 @@ User.destroy_all
   role: 0
 )
 
-# Restaurantes
 @restaurante1 = User.create!(
   email: "pizzahut@gmail.com",
   password: "123456",
