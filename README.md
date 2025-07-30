@@ -41,7 +41,7 @@ Este sistema permite que **restaurantes** cadastrem pratos e que **clientes** fa
 - Docker
 - Docker Compose
 
-### ▶Como iniciar o projeto
+### Como iniciar o projeto
 
 1. **Clone o repositório**:
  - `git clone https://github.com/lucasleandro1/IfoodSystem.git`
