@@ -52,11 +52,11 @@ Este sistema permite que **restaurantes** cadastrem pratos e que **clientees** f
   - `docker compose up -d`
 
 3. **Crie e migre o banco de dados**:
-  - `docker compose run web rails db:create`
+  - `docker compose exec web rails db:create`
   - `docker compose exec web bin/rails db:migrate`
 
 4. **(Opcional) Popule com dados iniciais**:
- - `docker compose run web rails db:seed`
+ - `docker compose exec web rails db:seed`
 
 5. Acesse a aplicação:
   - `http://localhost:3000`
@@ -64,7 +64,7 @@ Este sistema permite que **restaurantes** cadastrem pratos e que **clientees** f
 ## 🧪 Testes
 
 Para rodar os testes:
- - `docker-compose run web rspec`
+ - `docker compose run web rspec`
 
 ## 🛠️ Tecnologias Utilizadas
 
