@@ -1,4 +1,3 @@
-# app/services/food_manager/creator.rb
 module FoodManager
   class Creator
     attr_reader :user, :food_params

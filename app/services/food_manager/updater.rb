@@ -1,4 +1,4 @@
-# app/services/food_manager/updater.rb
+
 module FoodManager
   class Updater
     attr_reader :food, :food_params
