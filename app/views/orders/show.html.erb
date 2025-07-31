@@ -77,7 +77,7 @@
                       <label class="text-muted small">restaurante</label>
                       <p class="mb-0">
                         <i class="fas fa-store me-2 text-secondary"></i>
-                        <%= @order.food.user.email.split('@').first.humanize %>
+                        <%= split_name(@order.food.user.email) %>
                       </p>
                     </div>
                   <% end %>
