@@ -72,3 +72,4 @@ Para rodar os testes:
 - RSpec (testes)
 - Devise (para autenticação)
 - Kaminari (para paginação)
+- Ransack (para filtros)
