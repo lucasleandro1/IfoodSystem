@@ -44,26 +44,26 @@ Este sistema permite que **restaurantes** cadastrem pratos e que **clientes** fa
 ### Como iniciar o projeto
 
 1. **Clone o repositório**:
- - `git clone https://github.com/lucasleandro1/IfoodSystem.git`
- - `cd ifood_system`
+  - `git clone https://github.com/lucasleandro1/IfoodSystem.git`
+  - `cd ifood_system`
 
-2. **Construa a imagem e suba os containers**:
+2. **Construir e subir os containers**:
   - `docker compose build`
   - `docker compose up -d`
 
-3. **Crie e migre o banco de dados**:
-  - `docker compose exec web rails db:create db:migrate`
+4. **Criar e migrar o banco de dados**:
+  - `docker compose exec web bin/rails db:create db:migrate`
 
-4. **(Opcional) Popule com dados iniciais**:
- - `docker compose exec web rails db:seed`
+5. **(Opcional) Popular banco de dados**:
+  - `docker compose exec web rails db:seed`
 
-5. Acesse a aplicação:
-  - `http://localhost:3000`
+6. **Acessar a aplicação**:
+   - `http://localhost:3000`
 
 ## Testes
 
 Para rodar os testes:
- - `./bin/docker-test`
+  - `./bin/docker-test`
 
 ## Tecnologias Utilizadas
 

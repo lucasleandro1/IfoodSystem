@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Script para inicializar o banco de dados no ambiente Docker
+# Este script deve ser executado após o primeiro build do container
+
+echo "Inicializando banco de dados SQLite3 para Docker..."
+
+# Criar diretório storage se não existir
+mkdir -p storage
+
+# Executar migrations se necessário
+if [ ! -f "storage/development.sqlite3" ]; then
+    echo "Criando banco de dados de desenvolvimento..."
+    bundle exec rails db:create RAILS_ENV=development
+    bundle exec rails db:migrate RAILS_ENV=development
+    bundle exec rails db:seed RAILS_ENV=development
+fi
+
+if [ ! -f "storage/test.sqlite3" ]; then
+    echo "Criando banco de dados de teste..."
+    bundle exec rails db:create RAILS_ENV=test
+    bundle exec rails db:migrate RAILS_ENV=test
+fi
+
+echo "Banco de dados inicializado com sucesso!"

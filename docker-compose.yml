@@ -4,15 +4,27 @@ services:
     command: bash -c "rm -f tmp/pids/server.pid && bin/rails server -b '0.0.0.0'"
     volumes:
       - .:/app
+      - sqlite_data:/app/storage
     ports:
       - "3000:3000"
     environment:
-      DATABASE_HOST: localhost
-      DATABASE_USERNAME: sqlite
-      DATABASE_PASSWORD: sqlite
-      DATABASE_NAME: storage/development.sqlite3
+      RAILS_ENV: development
     networks:
       - app-network
+    depends_on:
+      - db
+
+  db:
+    image: alpine:latest
+    command: sh -c "apk add --no-cache sqlite && tail -f /dev/null"
+    volumes:
+      - sqlite_data:/data
+    networks:
+      - app-network
+
+volumes:
+  sqlite_data:
+    driver: local
 
 networks:
   app-network:
