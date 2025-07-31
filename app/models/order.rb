@@ -10,4 +10,13 @@ class Order < ApplicationRecord
   validates :payment_method, presence: true
   validates :estimated_value, numericality: { greater_than: 0 }
   validates :pickup_address, :delivery_address, :user, presence: true
+
+  def self.ransackable_attributes(auth_object = nil)
+    [ "created_at", "estimated_value", "food_id", "id", "payment_method", "requested_at",
+     "status", "updated_at", "user_id", "pickup_address_id", "delivery_address_id" ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    [ "user", "food", "pickup_address", "delivery_address" ]
+  end
 end

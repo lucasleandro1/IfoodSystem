@@ -25,6 +25,8 @@ gem "devise", "4.9.4"
 # Kaminari is a Scope & Engine based, clean, powerful, agnostic, customizable and sophisticated paginator [https://github.com/kaminari/kaminari]
 gem "kaminari"
 gem "kaminari-bootstrap", "~> 3.0.1"
+# Ransack enables the creation of both simple and advanced search forms for your Ruby on Rails application [https://github.com/activerecord-hackery/ransack]
+gem "ransack"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

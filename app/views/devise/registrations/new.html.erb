@@ -13,7 +13,7 @@
           <div class="mb-3">
             <%= f.label :email, "E-mail", class: "form-label" %>
             <%= f.email_field :email, autofocus: true, autocomplete: "email", 
-                              class: "form-control", placeholder: "seu@email.com" %>
+                              class: "form-control", placeholder: "seu@email.com", required: true %>
           </div>
 
           <div class="row">
@@ -21,7 +21,7 @@
               <div class="mb-3">
                 <%= f.label :password, "Senha", class: "form-label" %>
                 <%= f.password_field :password, autocomplete: "new-password", 
-                                    class: "form-control", placeholder: "Digite sua senha" %>
+                                    class: "form-control", placeholder: "Digite sua senha", required: true %>
                 <div class="form-text">Mínimo de 6 caracteres</div>
               </div>
             </div>
@@ -29,7 +29,7 @@
               <div class="mb-3">
                 <%= f.label :password_confirmation, "Confirmar Senha", class: "form-label" %>
                 <%= f.password_field :password_confirmation, autocomplete: "new-password", 
-                                    class: "form-control", placeholder: "Confirme sua senha" %>
+                                    class: "form-control", placeholder: "Confirme sua senha", required: true %>
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@
                   <%= f.radio_button :role, "cliente", class: "form-check-input", 
                                      checked: resource.role == "cliente" %>
                   <%= f.label :role_cliente, class: "form-check-label" do %>
-                    <strong>cliente</strong><br>
+                    <strong>Cliente</strong><br>
                     <small class="text-muted">Quero pedir comida</small>
                   <% end %>
                 </div>
@@ -52,7 +52,7 @@
                   <%= f.radio_button :role, "restaurante", class: "form-check-input", 
                                      checked: resource.role == "restaurante" %>
                   <%= f.label :role_restaurante, class: "form-check-label" do %>
-                    <strong>restaurante</strong><br>
+                    <strong>Restaurante</strong><br>
                     <small class="text-muted">Quero vender comida</small>
                   <% end %>
                 </div>

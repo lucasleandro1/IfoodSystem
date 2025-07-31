@@ -11,13 +11,13 @@
           <div class="mb-3">
             <%= f.label :email, class: "form-label" %>
             <%= f.email_field :email, autofocus: true, autocomplete: "email", 
-                              class: "form-control", placeholder: "seu@email.com" %>
+                              class: "form-control", placeholder: "seu@email.com", required: true %>
           </div>
 
           <div class="mb-3">
             <%= f.label :password, "Senha", class: "form-label" %>
             <%= f.password_field :password, autocomplete: "current-password", 
-                                class: "form-control", placeholder: "Digite sua senha" %>
+                                class: "form-control", placeholder: "Digite sua senha", required: true %>
           </div>
 
           <% if devise_mapping.rememberable? %>

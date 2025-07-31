@@ -19,47 +19,47 @@
 
       <div class="card mb-4">
         <div class="card-body">
-          <%= form_with url: orders_path, method: :get, local: true do |f| %>
+          <%= search_form_for @q, url: orders_path, local: true do |f| %>
             <div class="row g-3">
               <div class="col-md-2">
-                <%= f.label :status, t('views.orders.index.status_label'), class: "form-label" %>
-                <%= f.select :status, options_for_select([
+                <%= f.label :status_eq, t('views.orders.index.status_label'), class: "form-label" %>
+                <%= f.select :status_eq, options_for_select([
                   [t('views.orders.index.filters.all'), ''],
                   [t('views.orders.index.filters.pending'), 'pendente'],
                   [t('views.orders.index.filters.preparing'), 'preparando'],
                   [t('views.orders.index.filters.in_route'), 'em_rota'],
                   [t('views.orders.index.filters.delivered'), 'entregue'],
                   [t('views.orders.index.filters.cancelled'), 'cancelado']
-                ], params[:status]), {}, { class: "form-select" } %>
+                ], @q.status_eq), {}, { class: "form-select" } %>
               </div>
 
               <div class="col-md-2">
-                <%= f.label :period, t('views.orders.index.period_label'), class: "form-label" %>
-                <%= f.select :period, options_for_select([
+                <%= label_tag :period, t('views.orders.index.period_label'), class: "form-label" %>
+                <%= select_tag :period, options_for_select([
                   [t('views.orders.index.filters.all'), ''],
                   [t('views.orders.index.filters.today'), 'today'],
                   [t('views.orders.index.filters.week'), 'week'],
                   [t('views.orders.index.filters.month'), 'month']
-                ], params[:period]), {}, { class: "form-select" } %>
+                ], @period), { class: "form-select" } %>
               </div>
 
               <div class="col-md-2">
-                <%= f.label :date, t('views.orders.index.date_label'), class: "form-label" %>
-                <%= f.date_field :date, value: params[:date], class: "form-control" %>
+                <%= f.label :requested_at_eq, t('views.orders.index.date_label'), class: "form-label" %>
+                <%= f.date_field :requested_at_eq, value: @q.requested_at_eq, class: "form-control" %>
               </div>
 
               <% if current_user.cliente? && @restaurantes.present? %>
                 <div class="col-md-3">
-                  <%= f.label :restaurante_id, t('views.orders.index.restaurant_label'), class: "form-label" %>
-                  <%= f.select :restaurante_id, 
+                  <%= f.label :food_user_id_eq, t('views.orders.index.restaurant_label'), class: "form-label" %>
+                  <%= f.select :food_user_id_eq, 
                       options_from_collection_for_select(@restaurantes, :id, 
-                        lambda { |r| r.email.split('@').first.humanize }, params[:restaurante_id]),
+                        lambda { |r| r.email.split('@').first.humanize }, @q.food_user_id_eq),
                       { prompt: t('views.orders.index.filters.all_restaurants') }, 
                       { class: "form-select" } %>
                 </div>
               <% end %>
 
-              <div class="col-md-3 d-flex gap-2 align-items-end">
+              <div class="col-md-3 d-flex gap-2 align-items-end justify-content-end">
                 <%= f.submit t('views.orders.index.filter'), class: "btn btn-primary" %>
                 <%= link_to t('views.orders.index.clear'), orders_path, class: "btn btn-outline-secondary" %>
               </div>
@@ -72,7 +72,7 @@
         <div class="alert alert-info">
           <i class="fas fa-info-circle me-2"></i>
           <strong><%= t('views.orders.index.orders_found', count: @orders.total_count) %></strong>
-          <% if params[:status].present? || params[:period].present? || params[:date].present? || params[:restaurante_id].present? %>
+          <% if @q.status_eq.present? || @period.present? || @q.requested_at_eq.present? || @q.food_user_id_eq.present? %>
             <%= t('views.orders.index.with_filters') %>
           <% end %>
         </div>

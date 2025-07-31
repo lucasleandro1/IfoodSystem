@@ -2,48 +2,11 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @orders = if current_user.restaurante?
-                Order.joins(:food).where(foods: { user_id: current_user.id }).includes(:pickup_address, :delivery_address, :user, food: :user)
-    else
-                current_user.orders.includes(:pickup_address, :delivery_address, food: :user)
-    end
-
-    if params[:status].present?
-      @orders = @orders.where(status: params[:status])
-    else
-      @orders = @orders.where.not(status: [ "entregue", "cancelado" ])
-    end
-
-    if params[:date].present?
-      date = Date.parse(params[:date])
-      @orders = @orders.where(requested_at: date.beginning_of_day..date.end_of_day)
-    end
-
-    if params[:period].present?
-      case params[:period]
-      when "today"
-        @orders = @orders.where(requested_at: Date.current.beginning_of_day..Date.current.end_of_day)
-      when "week"
-        @orders = @orders.where(requested_at: 1.week.ago.beginning_of_day..Time.current)
-      when "month"
-        @orders = @orders.where(requested_at: 1.month.ago.beginning_of_day..Time.current)
-      end
-    end
-
-    if current_user.cliente? && params[:restaurante_id].present?
-      @orders = @orders.joins(:food).where(foods: { user_id: params[:restaurante_id] })
-    end
-
-    @orders = @orders.order(created_at: :desc)
-    @orders = @orders.page(params[:page]).per(6)
-
-    if current_user.cliente?
-      @restaurantes = User.joins(:foods, foods: :orders)
-                        .where(orders: { user_id: current_user.id })
-                        .where(role: :restaurante)
-                        .distinct
-                        .select(:id, :email)
-    end
+    result = OrderFilterService.call(current_user, params)
+    @orders = result[:orders]
+    @q = result[:search]
+    @period = result[:period]
+    @restaurantes = result[:restaurants] if current_user.cliente?
   end
 
   def user_orders
