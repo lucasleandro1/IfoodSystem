@@ -66,7 +66,7 @@ class OrdersController < ApplicationController
   end
 
   def update
-    @order = Order.find(params[:id])
+    @order = current_user.orders.find_by(id: params[:id])
     service = OrderManager::Updater.new(user: current_user, order: @order, status_param: params[:order][:status])
 
     if service.call
