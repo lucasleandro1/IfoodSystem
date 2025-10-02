@@ -6,11 +6,11 @@ FactoryBot.define do
     association :food
     association :pickup_address, factory: :address
     association :delivery_address, factory: :address
-    payment_method { :pix }
-    estimated_value { 25.50 }
-    status { :pendente }
-    requested_at { Time.current }
-    quantity { 1 }
-    item_description { "Test Item" }
+    payment_method { [ :pix, :cartao_credito, :cartao_debito, :dinheiro ].sample }
+    estimated_value { Faker::Commerce.price(range: 10.0..100.0) }
+    status { [ :pendente, :preparando, :saiu_para_entrega, :entregue, :cancelado ].sample }
+    requested_at { Faker::Time.between(from: 30.days.ago, to: Time.current) }
+    quantity { Faker::Number.between(from: 1, to: 5) }
+    item_description { Faker::Food.description }
   end
 end

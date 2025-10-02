@@ -2,14 +2,14 @@
 
 FactoryBot.define do
   factory :user do
-    sequence(:email) { |n| "client#{n}@test.com" }
-    password { "password123" }
-    password_confirmation { "password123" }
+    email { Faker::Internet.unique.email }
+    password { Faker::Internet.password(min_length: 8) }
+    password_confirmation { password }
     role { :cliente }
   end
 
   factory :restaurante, parent: :user do
-    sequence(:email) { |n| "restaurante#{n}@test.com" }
+    email { Faker::Internet.unique.email(domain: 'restaurante.com') }
     role { :restaurante }
   end
 end

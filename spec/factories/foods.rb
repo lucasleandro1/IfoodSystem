@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :food do
-    name { "Hamburguer" }
-    description { 'Dois hambúrgueres, queijo, alface, cebola e molho especial' }
-    price { 10.00 }
+    name { Faker::Food.dish }
+    description { Faker::Food.description }
+    price { Faker::Commerce.price(range: 5.0..50.0) }
     association :user, factory: :restaurante
   end
 end
