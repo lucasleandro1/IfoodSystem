@@ -10,8 +10,7 @@ class AddressesController < ApplicationController
   end
 
   def create
-    address_manager = AddressManager::Creator.new(current_user, address_params)
-    result = address_manager.call
+    result = AddressManager::Creator.call(current_user, address_params)
     if result[:success]
       redirect_to edit_user_registration_path, notice: result[:message]
     else
@@ -27,8 +26,7 @@ class AddressesController < ApplicationController
 
   def update
     @address = current_user.addresses.find(params[:id])
-    address_manager = AddressManager::Updater.new(current_user, @address, address_params)
-    result = address_manager.call
+    result = AddressManager::Updater.call(current_user, @address, address_params)
 
     if result[:success]
       redirect_to edit_user_registration_path, notice: result[:message]
@@ -40,8 +38,7 @@ class AddressesController < ApplicationController
 
   def destroy
     @address = current_user.addresses.find(params[:id])
-    address_manager = AddressManager::Destroyer.new(current_user, @address)
-    result = address_manager.call
+    result = AddressManager::Destroyer.call(current_user, @address)
 
     if result[:success]
       redirect_to edit_user_registration_path, notice: result[:message]

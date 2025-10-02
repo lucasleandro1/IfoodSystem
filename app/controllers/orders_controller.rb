@@ -58,9 +58,9 @@ class OrdersController < ApplicationController
   end
 
   def edit
-    @order = Order.find(params[:id])
+    @order = current_user.orders.find_by(id: params[:id])
 
-    unless current_user.restaurante? && @order.food.user_id == current_user.id
+    if @order.nil?
       redirect_to orders_path, alert: "Você não tem permissão para editar este pedido."
     end
   end
