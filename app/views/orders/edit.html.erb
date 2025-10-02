@@ -24,7 +24,7 @@
               <div class="alert alert-info">
                 <h6 class="mb-1">Pedido #<%= @order.id %></h6>
                 <p class="mb-0 small">
-                  <strong>cliente:</strong> <%= split_name(@order.user.email) %><br>
+                  <strong>Cliente:</strong> <%= split_name(@order.user.email) %><br>
                   <strong>Produto:</strong> <%= @order.item_description %><br>
                   <strong>Status Atual:</strong> 
                   <span class="badge bg-<%= status_badge_class(@order.status) %>">
@@ -56,10 +56,6 @@
             </div>
           <% end %>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
   (() => {
@@ -76,3 +72,9 @@
     });
   })();
 </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+

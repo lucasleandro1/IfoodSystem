@@ -13,50 +13,7 @@
       <% if current_user.present? %>
         <% if @foods.any? %>
           <div class="row">
-            <% @foods.each do |food| %>
-              <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
-                <div class="card food-card h-100">
-                  <div class="card-body d-flex flex-column">
-                    <h5 class="card-title text-primary"><%= food.name %></h5>
-                    <% unless current_user.restaurante? %>
-                      <p class="card-text text-muted small mb-2">
-                        <i class="fas fa-store"></i> 
-                        <strong><%= food.user.email.split('@').first.humanize %></strong>
-                      </p>
-                    <% end %>
-                    <p class="card-text mb-3 flex-grow-1">
-                      <%= truncate(food.description, length: 100) %>
-                    </p>
-                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                      <span class="price-tag">
-                        R$ <%= number_to_currency(food.price, unit: "", precision: 2) %>
-                      </span>
-                      <div class="btn-group" role="group">
-                        <% if current_user.restaurante? %>
-                          <%= link_to edit_food_path(food), class: "btn btn-outline-warning btn-sm me-1", title: t('views.foods.index.edit') do %>
-                            <i class="fas fa-edit"></i>
-                          <% end %>
-                          <%= button_to food_path(food), method: :delete, 
-                                       class: "btn btn-outline-danger btn-sm", 
-                                       data: { confirm: t('views.foods.index.delete_confirm') },
-                                       form: { style: "display: inline-block;" },
-                                       title: t('views.foods.index.delete') do %>
-                            <i class="fas fa-trash"></i>
-                          <% end %>
-                        <% else %>
-                          <%= link_to food_path(food), class: "btn btn-outline-info btn-sm me-1", title: t('views.foods.index.view') do %>
-                            <i class="fas fa-eye"></i>
-                          <% end %>
-                          <%= link_to new_order_path(food_id: food.id), class: "btn btn-success btn-sm", title: t('views.foods.index.order') do %>
-                            <i class="fas fa-shopping-cart"></i>
-                          <% end %>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <% end %>
+              <%= render @foods %>
           </div>
           
           <!-- Pagination -->

@@ -12,35 +12,7 @@
 
       <% if @addresses.any? %>
         <div class="row">
-          <% @addresses.each do |address| %>
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h5 class="card-title text-primary">
-                    <i class="fas fa-home me-2"></i>
-                    <%= address.street %>, <%= address.number %>
-                  </h5>
-                  <p class="card-text text-muted">
-                    <i class="fas fa-map-marker-alt me-2"></i>
-                    <%= address.neighborhood %>
-                  </p>
-                </div>
-                <div class="card-footer bg-transparent">
-                  <div class="d-flex gap-2">
-                    <%= link_to edit_address_path(address), class: "btn btn-outline-primary btn-sm" do %>
-                      <i class="fas fa-edit me-1"></i><%= t('views.addresses.index.edit') %>
-                    <% end %>
-                    <%= button_to address_path(address), 
-                        method: :delete, 
-                        data: { confirm: t('views.addresses.index.delete_confirm') },
-                        class: "btn btn-outline-danger btn-sm" do %>
-                      <i class="fas fa-trash me-1"></i><%= t('views.addresses.index.delete') %>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <% end %>
+          <%= render @addresses %>
         </div>
       <% else %>
         <div class="text-center py-5">
