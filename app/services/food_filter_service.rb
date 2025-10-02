@@ -8,7 +8,7 @@ class FoodFilterService
   end
 
   def call
-    foods = Food.joins(:user).includes(:user)
+    foods = Food.joins(:user)
 
     @q = foods.ransack(@params[:q])
     filtered_foods = @q.result
